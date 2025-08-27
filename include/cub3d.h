@@ -27,7 +27,7 @@ typedef struct s_img
 
 typedef struct s_map
 {
-	int **grid;
+	char **grid;
 	char *north_texture;
 	char *south_texture;
 	char *west_texture;
@@ -35,6 +35,18 @@ typedef struct s_map
 	int floor_color;
 	int ceiling_color;
 } t_map;
+
+typedef struct s_player
+{
+    double x;        // player position in map (float, not int)
+    double y;
+    double dir_x;    // direction vector
+    double dir_y;
+    double plane_x;  // 2D camera plane (FOV control)
+    double plane_y;
+} t_player;
+
+
 
 typedef struct s_data
 {
