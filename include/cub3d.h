@@ -75,5 +75,11 @@ bool	is_map_square(const char *pathname);
 bool	only_valid_chars(const char *pathname);
 bool	is_valid(const char *map);
 
+// ### PARSING ###
+void	ft_error_msg(char *msg, int exit_code);
+bool	is_map_square(const char *pathname);
+bool	map_is_closed_by_walls(const char *pathname);
+bool	only_valid_chars(const char *pathname);
+bool	is_valid(const char *map);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_lulu.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:49:23 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/27 14:11:46 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/08/27 23:04:06 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ int	file_is_openable(const char *pathname)
 
 bool	check_content(const char *pathname)
 {
-	if (!is_map_square(pathname))
-		return (false);
-	if (!only_valid_chars(pathname))
+	// if (!only_valid_chars(pathname))
+	// 	return (false);
+	if (!map_is_closed_by_walls(pathname))
 		return (false);
 	return (true);
 }

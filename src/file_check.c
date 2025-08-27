@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_check.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 11:38:04 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/27 12:48:13 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/08/27 23:03:12 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,131 @@ bool	is_map_square(const char *pathname)
 	return (free(line), true);
 }
 
+bool	line_is_only_wall(const char *line)
+{
+	size_t	len_line;
+	size_t	i;
+
+	if (!line)
+		return (false);
+	i = 0;
+	len_line = ft_strlen(line);
+	while (line && *line)
+	{
+		if (*line == '1')
+			line++;
+		else if (*line == '\n')
+		{
+			i++;
+			break;
+		}
+		else
+			break;
+		i++;
+	}
+	// printf("i:[%ld] | len_line:[%ld]\n", i, len_line);
+	if (i == len_line)
+		return (true);
+	return (false);
+}
+
+size_t	get_prev_size_line(char *line, int wall_index)
+{
+	size_t	i;
+	(void) wall_index;
+
+	i = 1;
+	while (line[i] && line[i] != '1')
+		i++;
+	if (!line[i])
+		return (0);
+	return (i + 1);
+}
+
+bool	check_upper_wall(char *line)
+{
+	if (!line)
+		return (false);
+	if (!line_is_only_wall(line))
+	{
+		printf("First line is not only walls\n");
+		return(free(line), false);
+	}
+	printf("First line is only walls\n");
+	return (true);
+}
+
+void	check_left_wall(char *line)
+{
+	if (line[0] == '1')
+		return ;
+	else
+	{
+		free(line);
+		ft_error_msg("Missing walls in map\n", 1);
+		return ;
+	}
+}
+
+bool	map_is_closed_by_walls(const char *pathname)
+{
+	int		fd;
+	size_t	i;
+	char	*line;
+	char	*last_line;
+	size_t	prev_size_line;
+	size_t	len;
+
+	fd = open(pathname, O_RDONLY);
+	if (fd < 0)
+		return (false);
+	line = get_next_line(fd);// premiere ligne
+	if (!check_upper_wall(line))
+		return (free(line), close(fd), false);
+	prev_size_line = ft_strlen(line);// on se rappelle de la taille du premier mur
+	last_line = ft_strdup(line);
+	free(line);
+	line = get_next_line(fd);// on charge la prochaine ligne a analyser
+	while (line)
+	{
+		len = ft_strlen(line);
+		if (line[0] != '1')
+			return (free(line), free(last_line), close(fd), false);
+		
+		if (len > 1 && line[len - 2] != '1')
+			return (free(line), free(last_line), close(fd), false);
+
+		if (len > prev_size_line)
+		{
+			i = prev_size_line - 1;
+			while (i < len - 1)
+			{
+				if (line[i] != '1')
+					return (free(line), free(last_line), close(fd), false);
+				i++;
+			}
+		}
+		else if (len < prev_size_line)
+		{
+			i = len - 1;
+			while (i < prev_size_line - 1)
+			{
+				if (last_line[i] != '1')
+					return (free(line), free(last_line), close(fd), false);
+				i++;
+			}
+		}
+		free(last_line);
+		last_line = ft_strdup(line);
+		prev_size_line = len;
+		free(line);
+		line = get_next_line(fd);
+	}
+	if (!check_upper_wall(last_line))
+		return (free(last_line), close(fd), false);
+	return(free(last_line), close(fd), true);
+}
+
 bool	only_valid_chars(const char *pathname)
 {
 	int		fd;
@@ -52,9 +177,10 @@ bool	only_valid_chars(const char *pathname)
 		i++;
 	if (i != ft_strlen(line))
 		return (free(line), false);
+	printf("(0) all good in only_valid_chars\n");
 	while (line)
 	{
-
+		printf("i:[%ld]\n", i);
 		free(line);
 		line = get_next_line(fd);
 		i = 0;
@@ -63,7 +189,10 @@ bool	only_valid_chars(const char *pathname)
 		while (line[i] && (line[i] == '0' || line[i] == '1' || line[i] == '\n'))
 			i++;
 		if (i != ft_strlen(line))
+		{
+			printf("i:[%ld] | size:[%ld]\n", i, ft_strlen(line));
 			return (free(line), false);
+		}
 	}
 	return (free(line), true);
 }
