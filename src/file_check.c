@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 11:38:04 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/27 23:03:12 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/08/27 23:07:00 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ bool	map_is_closed_by_walls(const char *pathname)
 		return (false);
 	line = get_next_line(fd);// premiere ligne
 	if (!check_upper_wall(line))
-		return (free(line), close(fd), false);
+		return (close(fd), false);
 	prev_size_line = ft_strlen(line);// on se rappelle de la taille du premier mur
 	last_line = ft_strdup(line);
 	free(line);
