@@ -24,7 +24,7 @@ SRC =	src/quit_clean.c \
 		src/file_check.c \
 		src/utils.c \
 		src/init.c \
-		src/main_lulu.c
+		src/main_alex.c
 
 GREEN = \033[32m
 RED = \033[31m
@@ -48,20 +48,26 @@ $(LIBFT_A):
 	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
 $(MLX_A):
-	@$(MAKE) -C $(MLX_DIR) --no-print-directory
+	@$(MAKE) -C $(MLX_DIR) --no-print-directory > /dev/null 2>/dev/null
+	@echo "$(GREEN)libmlx.a created successfully ! ✅ $(RESET)"
+
 
 all: $(NAME)
 
 clean:
 	@rm -rf build/
+	@$(MAKE) -C $(MLX_DIR) clean --no-print-directory > /dev/null
+	@echo "$(YELLOW)mlx object files cleaned. 🧹$(RESET)"
 	@$(MAKE) -C $(LIBFT_DIR) clean --no-print-directory
-	@$(MAKE) -C $(MLX_DIR) clean --no-print-directory
 	@echo "$(YELLOW)All object files cleaned. 🧹$(RESET)"
 
-fclean: clean
+fclean:
+	@rm -rf build/
+	@$(MAKE) -C $(MLX_DIR) clean --no-print-directory > /dev/null
+	@echo "$(YELLOW)mlx object files cleaned. 🧹$(RESET)"
+	@$(MAKE) -C $(LIBFT_DIR) fclean --no-print-directory
 	@rm -f $(NAME)
 	@echo "$(YELLOW)Executable cleaned. 🧹$(RESET)"
-	@$(MAKE) -C $(LIBFT_DIR) fclean --no-print-directory
 
 re: fclean all
 
