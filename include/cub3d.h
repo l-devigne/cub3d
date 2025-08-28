@@ -11,6 +11,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <fcntl.h>
+#include <math.h>
 #include "mlx.h"
 #include "../libft/libft.h"
 
@@ -50,19 +51,19 @@ typedef struct s_player
     double plane_y;
 } t_player;
 
+typedef struct s_coord
+{
+    float x;      
+    float y;
+} t_coord;
+
 typedef struct s_data
 {
 	void *mlx;
 	void *win;
 	t_img img;
 	t_map *map;
-	float min_x;
-	float min_y;
-	float max_x;
-	float max_y;
-	float zoom;
-	float offset_x;
-	float offset_y;
+	t_player *player;
 } 				t_data;
 
 enum
