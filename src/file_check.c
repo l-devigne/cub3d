@@ -6,36 +6,13 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 11:38:04 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/27 23:07:00 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/08/28 12:10:31 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-bool	is_map_square(const char *pathname)
-{
-	int		fd;
-	char	*line;
-	size_t	prev_len;
-
-	fd = open(pathname, O_RDONLY);
-	line = get_next_line(fd);// on charge la ligne de notre fichier
-	if (!line)
-		return (false);
-	while (line)
-	{
-		prev_len = ft_strlen(line);
-		free(line);
-		line = get_next_line(fd);
-		if (!line)
-			return (true);
-		if (ft_strlen(line) != prev_len)
-			return (free(line), false);
-	}
-	return (free(line), true);
-}
-
-bool	line_is_only_wall(const char *line)
+bool	process_line_check(const char *line)
 {
 	size_t	len_line;
 	size_t	i;
@@ -57,7 +34,6 @@ bool	line_is_only_wall(const char *line)
 			break;
 		i++;
 	}
-	// printf("i:[%ld] | len_line:[%ld]\n", i, len_line);
 	if (i == len_line)
 		return (true);
 	return (false);
@@ -76,16 +52,12 @@ size_t	get_prev_size_line(char *line, int wall_index)
 	return (i + 1);
 }
 
-bool	check_upper_wall(char *line)
+bool	is_line_full_wall(char *line)
 {
 	if (!line)
 		return (false);
-	if (!line_is_only_wall(line))
-	{
-		printf("First line is not only walls\n");
+	if (!process_line_check(line))
 		return(free(line), false);
-	}
-	printf("First line is only walls\n");
 	return (true);
 }
 
@@ -114,7 +86,7 @@ bool	map_is_closed_by_walls(const char *pathname)
 	if (fd < 0)
 		return (false);
 	line = get_next_line(fd);// premiere ligne
-	if (!check_upper_wall(line))
+	if (!is_line_full_wall(line))
 		return (close(fd), false);
 	prev_size_line = ft_strlen(line);// on se rappelle de la taille du premier mur
 	last_line = ft_strdup(line);
@@ -155,7 +127,7 @@ bool	map_is_closed_by_walls(const char *pathname)
 		free(line);
 		line = get_next_line(fd);
 	}
-	if (!check_upper_wall(last_line))
+	if (!is_line_full_wall(last_line))
 		return (free(last_line), close(fd), false);
 	return(free(last_line), close(fd), true);
 }
