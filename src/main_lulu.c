@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_lulu.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:49:21 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/27 12:48:24 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/08/28 14:32:40 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	ft_error_msg(char *msg, int exit_code)
 	exit(exit_code);
 }
 
+/* test depuis ma branche (lulu) */
 int	main(int ac, char **av)
 {
 	if (ac != 2)
