@@ -85,7 +85,15 @@ bool	map_is_closed_by_walls(const char *pathname)
 	fd = open(pathname, O_RDONLY);
 	if (fd < 0)
 		return (false);
+	i = 0;
+	while (i < 8)
+	{
+		line = get_next_line(fd);// premiere ligne
+		free(line);
+		i++;
+	}
 	line = get_next_line(fd);// premiere ligne
+	printf("First wall line :%s\n", line);
 	if (!is_line_full_wall(line))
 		return (close(fd), false);
 	prev_size_line = ft_strlen(line);// on se rappelle de la taille du premier mur

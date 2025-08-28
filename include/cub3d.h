@@ -46,7 +46,13 @@ typedef struct s_player
     double plane_y;
 } t_player;
 
-
+typedef	struct s_tab
+{
+	char	**tab;
+	int		x_len;
+	int		y_len;
+	char	*map_file;
+} t_tab;
 
 typedef struct s_data
 {
@@ -81,5 +87,8 @@ bool	is_map_square(const char *pathname);
 bool	map_is_closed_by_walls(const char *pathname);
 bool	only_valid_chars(const char *pathname);
 bool	is_valid(const char *map);
+char	**convert_file_to_tab(const char *map);
+int		get_x_len(const char *map);
+int		get_y_len(const char *map);
 
 #endif
