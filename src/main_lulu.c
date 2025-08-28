@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main_lulu.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:49:21 by ldevigne          #+#    #+#             */
 /*   Updated: 2025/09/01 10:09:14 by ldevigne         ###   ########.fr       */

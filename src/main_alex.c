@@ -6,7 +6,7 @@
 /*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:46:07 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/08/27 18:57:01 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/08/28 17:22:06 by aherlaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void init_test(t_map *test)
 }
 
 
-
 void init_player(char **grid, t_player *player)
 {
     int i;
@@ -42,11 +41,14 @@ void init_player(char **grid, t_player *player)
             {
                 player->x = ((float)j + ((float)j + 1)) / 2;
                 player->y= ((float)i + ((float)i + 1)) / 2;
-                break;         
+                break;
             }
+            ++j;
         }
+        if(grid[i][j] != '0' && grid[i][j] != '1')
+            break ;
+        ++i;
     }
-    
     if (grid[i][j] == 'N')
     {
         player->dir_x = 0;
@@ -54,7 +56,6 @@ void init_player(char **grid, t_player *player)
         player->plane_x = 0.66;  // 2D camera plane (FOV control)
         player->plane_y = 0;
     }
-    
     else if (grid[i][j] == 'S')
     {
         player->dir_x = 0;
@@ -62,7 +63,6 @@ void init_player(char **grid, t_player *player)
         player->plane_x = -0.66;
         player->plane_y = 0;
     }
-    
     else if (grid[i][j] == 'W')
     {
         player->dir_x = -1;
@@ -76,7 +76,7 @@ void init_player(char **grid, t_player *player)
         player->dir_y = 0;
         player->plane_x = 0;
         player->plane_y = 0.66; 
-    }    
+    }
 }
 
 void print_map(t_map map)
