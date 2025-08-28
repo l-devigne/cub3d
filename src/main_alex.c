@@ -115,7 +115,8 @@ int	main(void)
 	data.mlx = mlx_init();
 	data.win = mlx_new_window(data.mlx, 1900, 1000, "CUB3D");
     data.img = initialize_image(data.mlx, 1700, 800);
-
+    data.screen_height = 800;
+    data.screen_height = 1700;
 
     mlx_hook(data.win, 17, 0, &click_cross, &data);
 	mlx_key_hook(data.win, &esc_key, &data);
