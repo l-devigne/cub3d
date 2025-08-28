@@ -57,6 +57,13 @@ typedef struct s_coord
     float y;
 } t_coord;
 
+// typedef struct s_ray
+// {
+//     float x;      
+//     float y;
+// } t_ray;
+
+
 typedef struct s_data
 {
 	void *mlx;
@@ -64,6 +71,8 @@ typedef struct s_data
 	t_img img;
 	t_map *map;
 	t_player *player;
+	int screen_height;
+	int screen_width;
 } 				t_data;
 
 enum
