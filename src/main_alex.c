@@ -108,6 +108,7 @@ int	main(void)
     t_data data;
     t_map  test_map;
     t_player  player;
+    t_texture  texture;
 
     init_test(&test_map);
     init_player(test_map.grid, &player);
@@ -118,6 +119,7 @@ int	main(void)
     data.img = initialize_image(data.mlx, 1500, 800);
     data.player = &player;
     data.map = &test_map;
+    data.text = &texture;
     // data.screen_height = 20;
     // data.screen_width = 40;
     data.screen_height = 800;

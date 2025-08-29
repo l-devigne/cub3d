@@ -28,6 +28,7 @@ SRC =	src/quit_clean.c \
 		src/dda_algo_utils.c \
 		src/draw_stripes.c \
 		src/draw_stripes_utils.c \
+		src/handle_wall_textures.c \
 		src/utils.c \
 		src/init.c \
 		src/main_alex.c

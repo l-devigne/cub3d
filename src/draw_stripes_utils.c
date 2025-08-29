@@ -46,18 +46,3 @@ void	put_pixel_image(t_img img, int x, int y, int color)
 }
 // add textures later
 
-void choose_wall_color(int side, t_data *data, t_coord *ray_dir)
-{
-    int texture;
-    
-    if (side == 0 && ray_dir->x > 0)
-        texture = 0x00FF00; // pure green
-    else if (side == 0 && ray_dir->x < 0)
-        texture = 0x404040; // dark grey
-    else if (side == 1 && ray_dir->y > 0)
-        texture = 0x00FFFF; // cyan
-    else
-        texture = 0x000000; // black
-    data->map->wall_color = texture;
-}
-
