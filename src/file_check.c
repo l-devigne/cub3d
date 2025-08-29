@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 11:38:04 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/28 12:10:31 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/08/29 11:11:45 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,6 @@ bool	process_line_check(const char *line)
 	return (false);
 }
 
-size_t	get_prev_size_line(char *line, int wall_index)
-{
-	size_t	i;
-	(void) wall_index;
-
-	i = 1;
-	while (line[i] && line[i] != '1')
-		i++;
-	if (!line[i])
-		return (0);
-	return (i + 1);
-}
-
 bool	is_line_full_wall(char *line)
 {
 	if (!line)
@@ -59,18 +46,6 @@ bool	is_line_full_wall(char *line)
 	if (!process_line_check(line))
 		return(free(line), false);
 	return (true);
-}
-
-void	check_left_wall(char *line)
-{
-	if (line[0] == '1')
-		return ;
-	else
-	{
-		free(line);
-		ft_error_msg("Missing walls in map\n", 1);
-		return ;
-	}
 }
 
 bool	map_is_closed_by_walls(const char *pathname)
@@ -93,7 +68,6 @@ bool	map_is_closed_by_walls(const char *pathname)
 		i++;
 	}
 	line = get_next_line(fd);// premiere ligne
-	printf("First wall line :%s\n", line);
 	if (!is_line_full_wall(line))
 		return (close(fd), false);
 	prev_size_line = ft_strlen(line);// on se rappelle de la taille du premier mur
@@ -138,41 +112,4 @@ bool	map_is_closed_by_walls(const char *pathname)
 	if (!is_line_full_wall(last_line))
 		return (free(last_line), close(fd), false);
 	return(free(last_line), close(fd), true);
-}
-
-bool	only_valid_chars(const char *pathname)
-{
-	int		fd;
-	char	*line;
-	size_t	i;
-
-	fd = open(pathname, O_RDONLY);
-	printf("only_valid_chars function\n");
-	line = get_next_line(fd);// on charge la ligne de notre fichier
-	printf("%p => %s\n", line, line);
-	if (!line)
-		return (false);
-	i = 0;
-	while (line[i] && (line[i] == '0' || line[i] == '1' || line[i] == '\n'))
-		i++;
-	if (i != ft_strlen(line))
-		return (free(line), false);
-	printf("(0) all good in only_valid_chars\n");
-	while (line)
-	{
-		printf("i:[%ld]\n", i);
-		free(line);
-		line = get_next_line(fd);
-		i = 0;
-		if (!line)
-			return (true);
-		while (line[i] && (line[i] == '0' || line[i] == '1' || line[i] == '\n'))
-			i++;
-		if (i != ft_strlen(line))
-		{
-			printf("i:[%ld] | size:[%ld]\n", i, ft_strlen(line));
-			return (free(line), false);
-		}
-	}
-	return (free(line), true);
 }
