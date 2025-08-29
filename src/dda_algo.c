@@ -3,23 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   dda_algo.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meruem <meruem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 16:29:06 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/08/28 19:01:48 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/08/29 16:22:08 by meruem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-ray_dda_algo(t_data *data)
+float ray_dda_algo(t_data *data, float cam_step)
 {
     float rayPosX = data->player->x;
-    float rayPosY = data->player->y;
+    float rayPosY = data->player->y; 
     int mapX = (int)rayPosX;
     int mapY = (int)rayPosY;
-    float deltaDistX = fabs(1 / data->player->dir_x);
-    float deltaDistY = fabs(1 / data->player->dir_y);
+    float deltaDistX;
+    float deltaDistY;
+    t_coord dir;
+    t_coord plane;
+    dir.x = data->player->dir_x;
+    dir.y = data->player->dir_y;
+    plane.x = data->player->plane_x;
+    plane.y = data->player->plane_y;
+    t_coord *ray_dir = ray_direction(dir, plane, cam_step);
+    deltaDistX = fabs(1 / ray_dir->x);
+    deltaDistY = fabs(1 / ray_dir->y);
     int stepX;
     int stepY;
     float sideDistX;
@@ -29,7 +38,7 @@ ray_dda_algo(t_data *data)
     double perpWallDist;
 
 
-    if (data->player->dir_x < 0)
+    if (ray_dir->x < 0)
     { 
         stepX = -1; 
         sideDistX = (rayPosX - mapX) * deltaDistX; 
@@ -39,7 +48,7 @@ ray_dda_algo(t_data *data)
         stepX = +1; 
         sideDistX = (mapX + 1.0 - rayPosX) * deltaDistX;
     }
-    if (data->player->dir_y < 0) 
+    if (ray_dir->y < 0) 
     { 
         stepY = -1; 
         sideDistY = (rayPosY - mapY) * deltaDistY;
@@ -68,9 +77,14 @@ ray_dda_algo(t_data *data)
         if (data->map->grid[mapY][mapX] == '1')
             hit = 1;
     }
+    
 
     if (side == 0)
-        perpWallDist = (mapX - rayPosX + (1 - stepX) / 2) / rayDirX;
+        perpWallDist = ((float)mapX - rayPosX + (1 - stepX) / 2) / ray_dir->x;
     else
-        perpWallDist = (mapY - rayPosY + (1 - stepY) / 2) / rayDirY;
+        perpWallDist = ((float)mapY - rayPosY + (1 - stepY) / 2) / ray_dir->y;
+    
+    choose_color(side, data, ray_dir);
+
+    return (perpWallDist);
 }

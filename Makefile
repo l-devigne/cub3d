@@ -22,6 +22,12 @@ NAME = cub3d
 SRC =	src/quit_clean.c \
 		src/parsing_lulu.c \
 		src/file_check.c \
+		src/real_distance.c \
+		src/ray_direction.c \
+		src/dda_algo.c \
+		src/dda_algo_utils.c \
+		src/draw_stripes.c \
+		src/draw_stripes_utils.c \
 		src/utils.c \
 		src/init.c \
 		src/main_alex.c
