@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:49:21 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/29 11:10:40 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/08/29 14:15:43 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	tab_free_null(char **tab)
 	tab = NULL;
 }
 
-void	ft_clear_map(t_map *map)
+void	ft_clear_map(t_map *map, int error_code)
 {
 	char_free_null(map->map_path);
 	char_free_null(map->east_texture);
@@ -52,6 +52,8 @@ void	ft_clear_map(t_map *map)
 	char_free_null(map->north_texture);
 	char_free_null(map->south_texture);
 	tab_free_null(map->grid);
+	if (error_code == 1)
+		ft_error_msg("Error!\n", 1);
 }
 
 int	main(int ac, char **av)

@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:49:23 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/29 11:48:19 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/08/29 14:47:10 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,10 +198,7 @@ void	fill_grid(t_map *map)
 	printf("x_len:%d | y_len:%d\n", map->x_len, map->y_len);
 	map->grid = malloc(sizeof(char *) * (map->y_len + 1));
 	if (!(map->grid))
-	{
-		ft_clear_map(map);
-		ft_error_msg("Unable to malloc tab!\n", 1);
-	}
+		ft_clear_map(map, 1);
 	skip_lines(fd, line, 8);
 	y = 0;
 	while (y < map->y_len)
@@ -209,13 +206,9 @@ void	fill_grid(t_map *map)
 		line = get_next_line(fd);
 		if (!line)
 			break;
-
 		map->grid[y] = malloc(sizeof(char) * (map->x_len + 1)); // +1 pour \0
 		if (!map->grid[y])
-		{
-			ft_clear_map(map);
-			ft_error_msg("Unable to malloc line!\n", 1);
-		}
+			ft_clear_map(map, 1);
 		int x = 0;
 		while (x < map->x_len && line[x] && line[x] != '\n')
 		{
@@ -230,9 +223,67 @@ void	fill_grid(t_map *map)
 	close(fd);
 }
 
+int		ft_strtol(char *str)
+{
+	int	result;
+	int	i;
+
+	result = 0;
+	i = 0;
+	if (str[0] == '0' && (str[1] == 'x' || str[1] == 'X'))
+		i = 2;
+	while (str[i])
+	{
+		result *= 16;
+		if (str[i] >= '0' && str[i] <= '9')
+			result += str[i] - '0';
+		else if (str[i] >= 'A' && str[i] <= 'F')
+			result += str[i] - 'A' + 10;
+		else if (str[i] >= 'a' && str[i] <= 'f')
+			result += str[i] - 'a' + 10;
+		else
+			break ;
+		i++;
+	}
+    return (result);
+}
+
+int	set_color_limit(int val)
+{
+	if (val < 0)
+		val = 0;
+	if (val > 255)
+		val = 255;
+	return (val);
+}
+
 int	get_color_from_string(char *str)
 {
-	return (ft_atoi(str));
+	int 	r;
+	int		g;
+	int		b;
+	char	*ptr;
+
+	r = 0;
+	g = 0;
+	b = 0;
+	str = ft_itoa(ft_strtol(str));
+	ptr = str;
+	r = ft_atoi(ptr);
+	while (*ptr && *ptr != ',')
+		ptr++;
+	if (*ptr == ',')
+		ptr++;
+	g = ft_atoi(ptr);
+	while (*ptr && *ptr != ',')
+		ptr++;
+	if (*ptr == ',')
+		ptr++;
+	b = ft_atoi(ptr);
+	r = set_color_limit(r);
+	g = set_color_limit(g);
+	b = set_color_limit(b);
+	return ((r << 16) | (g << 8) | b);
 }
 
 void	get_textures(t_map *map)

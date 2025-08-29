@@ -70,7 +70,7 @@ typedef struct s_data
 void	ft_clear_all(t_data *data);
 int		click_cross(t_data *data);
 int		esc_key(int keysym, t_data *data);
-void	ft_clear_map(t_map *map);
+void	ft_clear_map(t_map *map, int error_code);
 void	tab_free_null(char **tab);
 void	char_free_null(char *s);
 
@@ -88,10 +88,12 @@ int		get_x_len(const char *map_path);
 int		get_y_len(const char *map_path);
 
 bool	process_line_check(const char *line);
+void	skip_lines(int fd, char *line, int nb_to_skip);
 bool	is_line_full_wall(char *line);
 bool	map_is_closed_by_walls(const char *pathname);
 
 // ### PARSING ###
+int		ft_strtol(char *str);
 void	fill_map_struct(const char *map_path, t_map *parsed_struct);
 void	display_map(t_map *map);
 

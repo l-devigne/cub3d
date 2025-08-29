@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 11:38:04 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/29 11:11:45 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/08/29 15:01:29 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	process_line_check(const char *line)
 	len_line = ft_strlen(line);
 	while (line && *line)
 	{
-		if (*line == '1')
+		if (*line == '1' || *line == ' ')
 			line++;
 		else if (*line == '\n')
 		{
@@ -44,7 +44,7 @@ bool	is_line_full_wall(char *line)
 	if (!line)
 		return (false);
 	if (!process_line_check(line))
-		return(free(line), false);
+		return (false);
 	return (true);
 }
 
@@ -61,15 +61,11 @@ bool	map_is_closed_by_walls(const char *pathname)
 	if (fd < 0)
 		return (false);
 	i = 0;
-	while (i < 8)
-	{
-		line = get_next_line(fd);// premiere ligne
-		free(line);
-		i++;
-	}
+	line = NULL;
+	skip_lines(fd, line, 8);
 	line = get_next_line(fd);// premiere ligne
 	if (!is_line_full_wall(line))
-		return (close(fd), false);
+		return (free(line), close(fd), false);
 	prev_size_line = ft_strlen(line);// on se rappelle de la taille du premier mur
 	last_line = ft_strdup(line);
 	free(line);
@@ -77,10 +73,10 @@ bool	map_is_closed_by_walls(const char *pathname)
 	while (line)
 	{
 		len = ft_strlen(line);
-		if (line[0] != '1')
+		if (!(line[0] == '1' || line[0] == ' '))
 			return (free(line), free(last_line), close(fd), false);
 		
-		if (len > 1 && line[len - 2] != '1')
+		if (len > 1 && !(line[len - 2] == '1' || line[len - 2] == ' '))
 			return (free(line), free(last_line), close(fd), false);
 
 		if (len > prev_size_line)
@@ -88,7 +84,7 @@ bool	map_is_closed_by_walls(const char *pathname)
 			i = prev_size_line - 1;
 			while (i < len - 1)
 			{
-				if (line[i] != '1')
+				if (!(line[i] == '1' || line[i] == ' '))
 					return (free(line), free(last_line), close(fd), false);
 				i++;
 			}
@@ -98,8 +94,8 @@ bool	map_is_closed_by_walls(const char *pathname)
 			i = len - 1;
 			while (i < prev_size_line - 1)
 			{
-				if (last_line[i] != '1')
-					return (free(line), free(last_line), close(fd), false);
+				if (!(last_line[i] == '1' || last_line[i] == ' '))
+					return (free(last_line), close(fd), false);
 				i++;
 			}
 		}
