@@ -35,6 +35,7 @@ typedef struct s_map
 	char *east_texture;
 	int floor_color;
 	int ceiling_color;
+	int wall_color;
 } t_map;
 
 typedef struct s_player
@@ -89,5 +90,26 @@ bool	is_map_square(const char *pathname);
 bool	map_is_closed_by_walls(const char *pathname);
 bool	only_valid_chars(const char *pathname);
 bool	is_valid(const char *map);
+
+// ### DRAW STRIPES UTILS ###
+void	put_pixel_image(t_img img, int x, int y, int color);
+int		draw_end_wall(t_data *data, float perpWallDist);
+int		draw_start_wall(t_data *data, float perpWallDist);
+int		screen_wall_height(t_data *data, float perpWallDist);
+void 	choose_color(int side, t_data *data, t_coord *ray_dir);
+
+
+// ### DRAW STRIPES ###
+void draw_stripe(t_data *data, float cam_step, int index);
+void draw_whole_screen(t_data *data);
+
+
+
+// ### DDA ALGO ###
+float ray_dda_algo(t_data *data, float cam_step);
+
+// ### RAY DIRECTION ###
+float cameraX_choice(int screen_width, float camrange_index);
+t_coord *ray_direction(t_coord dir, t_coord plane, float cameraX);
 
 #endif
