@@ -33,9 +33,10 @@ typedef struct s_map
 	char *south_texture;
 	char *west_texture;
 	char *east_texture;
+	char *wall_path_choice;
 	int floor_color;
 	int ceiling_color;
-	int wall_color;
+
 } t_map;
 
 typedef struct s_player
@@ -70,6 +71,17 @@ typedef struct s_ray
 //     float y;
 // } t_ray;
 
+typedef struct s_texture
+{
+	char *tex_addr;
+	int width;
+	int height;
+	int texX;
+	int texY;
+	int line_len;
+	int bpp;
+	int endian;
+} t_texture;
 
 typedef struct s_data
 {
@@ -78,6 +90,7 @@ typedef struct s_data
 	t_img img;
 	t_map *map;
 	t_player *player;
+	t_texture *text;
 	int screen_height;
 	int screen_width;
 } 				t_data;
@@ -106,7 +119,9 @@ void	put_pixel_image(t_img img, int x, int y, int color);
 int		draw_end_wall(t_data *data, float perpWallDist);
 int		draw_start_wall(t_data *data, float perpWallDist);
 int		screen_wall_height(t_data *data, float perpWallDist);
-void 	choose_color(int side, t_data *data, t_coord *ray_dir);
+void 	choose_wall_textures(int side, t_data *data, t_coord *ray_dir);
+void 	texture_handling(t_data *data, char *texture_path, int side, t_ray ray, float perpWallDist);
+
 
 
 // ### DRAW STRIPES ###

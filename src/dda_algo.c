@@ -25,7 +25,7 @@ float ray_dda_algo(t_data *data, float cam_step)
     else
         perpWallDist = ((float)ray_info.ray_map_origin_y - ray_info.ray_origin.y + (1 - ray_info.step_map.y) / 2) / ray_info.ray_dir->y;
     
-    choose_wall_color(side, data, ray_info.ray_dir);
-
+    choose_wall_textures(side, data, ray_info.ray_dir);
+    texture_handling(data, data->map->wall_path_choice, side, ray_info, perpWallDist);
     return (perpWallDist);
 }
