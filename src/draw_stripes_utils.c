@@ -46,7 +46,7 @@ void	put_pixel_image(t_img img, int x, int y, int color)
 }
 // add textures later
 
-void choose_color(int side, t_data *data, t_coord *ray_dir)
+void choose_wall_color(int side, t_data *data, t_coord *ray_dir)
 {
     int texture;
     

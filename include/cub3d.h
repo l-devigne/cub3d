@@ -53,10 +53,20 @@ typedef struct s_player
 
 typedef struct s_coord
 {
-    float x;      
+    float x;  
     float y;
 } t_coord;
 
+typedef struct s_ray
+{
+	t_coord *ray_dir;
+	t_coord ray_origin;
+	int ray_map_origin_x;
+	int ray_map_origin_y;
+	t_coord dist_next_cel;
+	t_coord step_map;
+	t_coord side_dist;
+}t_ray;
 // typedef struct s_ray
 // {
 //     float x;      
@@ -144,8 +154,13 @@ void draw_whole_screen(t_data *data);
 // ### DDA ALGO ###
 float ray_dda_algo(t_data *data, float cam_step);
 
+// ### DDA ALGO UTILS###
+void	init_ray(t_ray *ray, t_data *data, float cam_step);
+int which_side_hit(t_data *data, t_ray *ray);
+
+
 // ### RAY DIRECTION ###
 float cameraX_choice(int screen_width, float camrange_index);
-t_coord *ray_direction(t_coord dir, t_coord plane, float cameraX);
+t_coord *ray_direction(t_player *player, float cameraX);
 
 #endif

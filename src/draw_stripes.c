@@ -23,20 +23,11 @@ void draw_stripe(t_data *data, float cam_step, int index)
     while(i < data->screen_height)
     {
         if (i < start)
-        {
-            // ceiling
             put_pixel_image(data->img, index, i, data->map->ceiling_color);
-        }
         else if (i >= start && i <= end)
-        {
-            // wall (use texture sampling here, simple example = solid color)
             put_pixel_image(data->img, index, i, data->map->wall_color);
-        }
         else
-        {
-            // floor
             put_pixel_image(data->img, index, i, data->map->floor_color);
-        }
         ++i;
     }
 }
