@@ -6,7 +6,7 @@
 /*   By: meruem <meruem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:46:07 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/08/30 19:36:39 by meruem           ###   ########.fr       */
+/*   Updated: 2025/08/30 23:24:50 by meruem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,24 @@ void print_map(t_map map)
     printf("color of the ceiling is : %d\n", map.floor_color);
 }
 
+void init_keys(t_data *data, t_keys *keys)
+{
+    keys->key_a = 0;
+    keys->key_d = 0;
+    keys->key_w = 0;
+    keys->key_s = 0;
+    keys->key_left = 0;
+    keys->key_right = 0;
+    data->keys = keys;
+}
+
 int	main(void)
 {
     t_data data;
     t_map  test_map;
     t_player  player;
     t_texture  texture;
+    t_keys  keys;
 
     texture.tex_img = NULL;
     init_test(&test_map);
@@ -120,14 +132,17 @@ int	main(void)
     data.player = &player;
     data.map = &test_map;
     data.text = &texture;
+    init_keys(&data, &keys);
     data.screen_height = 800;
     data.screen_width = 1500;
 
     draw_whole_screen(&data);
     mlx_put_image_to_window(data.mlx, data.win, data.img.mlx_img, 50, 50);
 
-    mlx_hook(data.win, 17, 0, &click_cross, &data);
-    mlx_hook(data.win, KeyPress, KeyPressMask, handle_keys, &data);
+    mlx_hook(data.win, KeyPress, KeyPressMask, detect_key_press, &data);
+    mlx_hook(data.win, KeyRelease, KeyReleaseMask, detect_key_release, &data);
+    mlx_loop_hook(data.mlx, handle_keys, &data);
+
     mlx_loop(data.mlx);
 	return (0);
 }

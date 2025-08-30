@@ -75,6 +75,16 @@ typedef struct s_ray
 //     float y;
 // } t_ray;
 
+typedef struct s_keys
+{
+	bool key_w;
+	bool key_s;
+	bool key_a;
+	bool key_d;
+	bool key_left;
+	bool key_right;
+} t_keys;
+
 typedef struct s_texture
 {
 	void *tex_img;
@@ -96,6 +106,7 @@ typedef struct s_data
 	t_map *map;
 	t_player *player;
 	t_texture *text;
+	t_keys *keys;
 	int screen_height;
 	int screen_width;
 } 				t_data;
@@ -182,10 +193,18 @@ float cameraX_choice(int screen_width, float camrange_index);
 t_coord *ray_direction(t_player *player, float cameraX);
 
 // ### MOVE KEYS ###
-int handle_keys(int keysym, t_data *data);
+void move_forward(t_data *data);
+void move_backward(t_data *data);
+void move_left(t_data *data);
+void move_right(t_data *data);
 
-// ### MOVE KEYS ###
+// ### VIEW TURN KEYS ###
 void rotate_right(t_data *data);
 void rotate_left(t_data *data);
+
+// ### KEY PRESS MANAGEMENT ###
+int handle_keys(t_data *data);
+int detect_key_release(int keysym, t_data *data);
+int detect_key_press(int keysym, t_data *data);
 
 #endif
