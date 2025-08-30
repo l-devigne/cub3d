@@ -29,6 +29,8 @@ SRC =	src/quit_clean.c \
 		src/draw_stripes.c \
 		src/draw_stripes_utils.c \
 		src/handle_wall_textures.c \
+		src/move_keys.c \
+		src/view_turn_keys.c \
 		src/utils.c \
 		src/init.c \
 		src/main_alex.c

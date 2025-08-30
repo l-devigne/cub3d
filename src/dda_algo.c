@@ -6,7 +6,7 @@
 /*   By: meruem <meruem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 16:29:06 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/08/29 16:22:08 by meruem           ###   ########.fr       */
+/*   Updated: 2025/08/30 18:04:21 by meruem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ float ray_dda_algo(t_data *data, float cam_step)
 {
     t_ray ray_info;
     int side;
-    double perpWallDist;
+    float perpWallDist;
 
     init_ray(&ray_info, data, cam_step);
     side = which_side_hit(data, &ray_info);
@@ -27,5 +27,6 @@ float ray_dda_algo(t_data *data, float cam_step)
     
     choose_wall_textures(side, data, ray_info.ray_dir);
     texture_handling(data, data->map->wall_path_choice, side, ray_info, perpWallDist);
+    free(ray_info.ray_dir);
     return (perpWallDist);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dda_algo_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meruem <meruem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 16:35:24 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/08/28 16:35:26 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/08/30 18:04:24 by meruem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void init_ray(t_ray *ray, t_data *data, float cam_step)
 {
     ray->ray_dir = ray_direction(data->player, cam_step);
     ray->ray_origin.x = data->player->x;
-    ray->ray_origin.y = data->player->x;
+    ray->ray_origin.y = data->player->y;
     ray->ray_map_origin_x = (int)ray->ray_origin.x;
     ray->ray_map_origin_y = (int)ray->ray_origin.y;
     ray->dist_next_cel.x = fabs(1 / ray->ray_dir->x);
