@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit_clean.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meruem <meruem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:33:27 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/08/26 17:02:59 by aherlaud         ###   ########.fr       */
+/*   Updated: 2025/08/30 19:03:45 by meruem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	ft_clear_all(t_data *data)
 {
 	mlx_destroy_image(data->mlx, data->img.mlx_img);
+	mlx_destroy_image(data->mlx, data->text->tex_img);
 	mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
@@ -30,13 +31,8 @@ int	click_cross(t_data *data)
 	exit(0);
 	return (0);
 }
-
-int	esc_key(int keysym, t_data *data)
+void close_window(t_data *data)
 {
-	if (keysym == 65307)
-	{
-		ft_clear_all(data);
-		exit(0);
-	}
-	return (0);
+	ft_clear_all(data);
+	exit(0);
 }

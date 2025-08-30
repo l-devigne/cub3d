@@ -11,6 +11,8 @@
 #include <string.h>
 #include <stdbool.h>
 #include <fcntl.h>
+#include <X11/X.h>
+#include <X11/keysym.h>
 #include <math.h>
 #include "mlx.h"
 #include "../libft/libft.h"
@@ -43,12 +45,12 @@ typedef struct s_map
 
 typedef struct s_player
 {
-    double x;        // player position in map (float, not int)
-    double y;
-    double dir_x;    // direction vector
-    double dir_y;
-    double plane_x;  // 2D camera plane (FOV control)
-    double plane_y;
+    float x;        // player position in map (float, not int)
+    float y;
+    float dir_x;    // direction vector
+    float dir_y;
+    float plane_x;  // 2D camera plane (FOV control)
+    float plane_y;
 } t_player;
 
 typedef struct s_coord
@@ -75,6 +77,7 @@ typedef struct s_ray
 
 typedef struct s_texture
 {
+	void *tex_img;
 	char *tex_addr;
 	int width;
 	int height;
@@ -110,6 +113,7 @@ int		esc_key(int keysym, t_data *data);
 void	ft_clear_map(t_map *map, int error_code);
 void	tab_free_null(char **tab);
 void	char_free_null(char **s);
+void close_window(t_data *data);
 
 // ### INIT ###
 t_img initialize_image(void *mlx, int width, int height);
@@ -176,5 +180,12 @@ int which_side_hit(t_data *data, t_ray *ray);
 // ### RAY DIRECTION ###
 float cameraX_choice(int screen_width, float camrange_index);
 t_coord *ray_direction(t_player *player, float cameraX);
+
+// ### MOVE KEYS ###
+int handle_keys(int keysym, t_data *data);
+
+// ### MOVE KEYS ###
+void rotate_right(t_data *data);
+void rotate_left(t_data *data);
 
 #endif
