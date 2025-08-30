@@ -6,11 +6,60 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 11:38:04 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/29 15:01:29 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/08/30 13:24:27 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
+
+bool	is_valid(const char *map_path)
+{
+	size_t		len_map;
+
+	len_map = ft_strlen(map_path);
+	if (!map_path)
+		return (false);
+	if (!extension_is_correct(map_path, len_map))
+		return (false);
+	if (get_safe_fd(map_path, CLOSE) == -1)
+		return (false);
+	// else
+	// 	return (check_content(map_path));// we check that later after parsing
+	return (true);
+}
+
+bool	extension_is_correct(const char *map_path, size_t len_map)
+{
+	if (map_path[len_map - 1] != 'b')
+		return (false);
+	if (map_path[len_map - 2] != 'u')
+		return (false);
+	if (map_path[len_map - 3] != 'c')
+		return (false);
+	if (map_path[len_map - 4] != '.')
+		return (false);
+	return (true);
+}
+
+int	get_safe_fd(const char *map_path, int flag)
+{
+	int	fd;
+
+	fd = open(map_path, O_RDONLY);
+	if (fd < 0)
+		ft_error_msg("Unable to open file.\n", 1);
+	if (flag == CLOSE)
+		close(fd);
+	return (fd);
+}
+
+// bool	check_content(const char *map_path)
+// {
+// 	/* need to implement CHECKING for textures, colors etc. */
+// 	if (!map_is_closed_by_walls(map_path))
+// 		return (false);
+// 	return (true);
+// }
 
 bool	process_line_check(const char *line)
 {
@@ -48,64 +97,128 @@ bool	is_line_full_wall(char *line)
 	return (true);
 }
 
-bool	map_is_closed_by_walls(const char *pathname)
+/* map->grid has been parsed, we need to do 2 steps 
+1 - transform SPACE char to '1' (walls) 
+2 - check if map is closed by walls */
+
+int		check_left(t_map *map, int i, int j)
 {
-	int		fd;
-	size_t	i;
-	char	*line;
-	char	*last_line;
-	size_t	prev_size_line;
-	size_t	len;
+	bool	left;
+	int		tmp;
 
-	fd = open(pathname, O_RDONLY);
-	if (fd < 0)
-		return (false);
-	i = 0;
-	line = NULL;
-	skip_lines(fd, line, 8);
-	line = get_next_line(fd);// premiere ligne
-	if (!is_line_full_wall(line))
-		return (free(line), close(fd), false);
-	prev_size_line = ft_strlen(line);// on se rappelle de la taille du premier mur
-	last_line = ft_strdup(line);
-	free(line);
-	line = get_next_line(fd);// on charge la prochaine ligne a analyser
-	while (line)
+	left = false;
+	tmp = j;
+	while (map->grid[i][j])
 	{
-		len = ft_strlen(line);
-		if (!(line[0] == '1' || line[0] == ' '))
-			return (free(line), free(last_line), close(fd), false);
-		
-		if (len > 1 && !(line[len - 2] == '1' || line[len - 2] == ' '))
-			return (free(line), free(last_line), close(fd), false);
-
-		if (len > prev_size_line)
+		if (map->grid[i][j] == '1')
 		{
-			i = prev_size_line - 1;
-			while (i < len - 1)
-			{
-				if (!(line[i] == '1' || line[i] == ' '))
-					return (free(line), free(last_line), close(fd), false);
-				i++;
-			}
+			left = true;
+			break;
 		}
-		else if (len < prev_size_line)
-		{
-			i = len - 1;
-			while (i < prev_size_line - 1)
-			{
-				if (!(last_line[i] == '1' || last_line[i] == ' '))
-					return (free(last_line), close(fd), false);
-				i++;
-			}
-		}
-		free(last_line);
-		last_line = ft_strdup(line);
-		prev_size_line = len;
-		free(line);
-		line = get_next_line(fd);
+		else
+			j--;
+		if (j < 0)
+			return (-1);
 	}
-	if (!is_line_full_wall(last_line))
-		return (free(last_line), close(fd), false);
-	return(free(last_line), close(fd), true);
+	if (left == false)
+		return (-1);
+	return (tmp);
+
+}
+int		check_right(t_map *map, int i, int j)
+{
+	bool	right;
+	int		tmp;
+
+	tmp = j;
+	while (map->grid[i][j])
+	{
+		if (map->grid[i][j] == '1')
+		{
+			right = true;
+			break;
+		}
+		else
+			j++;
+		if (j > (int) ft_strlen(map->grid[i]))
+			return (-1);
+	}
+	if (right == false)
+		return (-1);
+	return (tmp);
+}
+
+int		check_up(t_map *map, int i, int j)
+{
+	bool	up;
+	int		tmp;
+
+	tmp = j;
+	while (map->grid[i][j])
+	{
+		if (map->grid[i][j] == '1')
+		{
+			up = true;
+			break;
+		}
+		else
+			i--;
+		if (i < 0)
+			return (-1);
+	}
+	if (up == false)
+		return (-1);
+	return (tmp);
+}
+
+int		check_down(t_map *map, int i, int j)
+{
+	bool	down;
+	int		tmp;
+
+	tmp = j;
+	while (map->grid[i][j])
+	{
+		if (map->grid[i][j] == '1')
+		{
+			down = true;
+			break;
+		}
+		else
+			i++;
+		if (i > map->y_len - 1)
+			return (-1);
+	}
+	if (down == false)
+		return (-1);
+	return (tmp);
+}
+
+bool	map_is_closed_by_walls(t_map *map)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (map->grid[i])
+	{
+		j = 0;
+		while (map->grid[i][j])
+		{
+			if (map->grid[i][j] == '0')
+			{
+				if (check_left(map, i, j) == -1)
+					return (false);
+				if (check_right(map, i, j) == -1)
+					return (false);
+				if (check_up(map, i, j) == -1)
+					return (false);
+				if (check_down(map, i, j) == -1)
+					return (false);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (true);
 }
