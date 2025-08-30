@@ -49,8 +49,6 @@ typedef struct s_player
     double plane_y;
 } t_player;
 
-
-
 typedef struct s_data
 {
 	void *mlx;
@@ -66,6 +64,12 @@ typedef struct s_data
 	float offset_y;
 } 				t_data;
 
+enum
+{
+	KEEP_OPEN,
+	CLOSE,
+};
+
 // ### QUIT_CLEAN ###
 void	ft_clear_all(t_data *data);
 int		click_cross(t_data *data);
@@ -77,29 +81,32 @@ void	char_free_null(char *s);
 // ### INIT ###
 t_img initialize_image(void *mlx, int width, int height);
 
-
-
 // ### CHECKING ###
-bool	extension_is_correct(const char *map_path, size_t len_map);
-int		get_safe_fd(const char *map_path);
-bool	check_content(const char *map_path);
 bool	is_valid(const char *map_path);
-int		get_x_len(const char *map_path);
-int		get_y_len(const char *map_path);
-
+bool	extension_is_correct(const char *map_path, size_t len_map);
+int		get_safe_fd(const char *map_path, int flag);
+bool	check_content(const char *map_path);
 bool	process_line_check(const char *line);
-void	skip_lines(int fd, char *line, int nb_to_skip);
 bool	is_line_full_wall(char *line);
-bool	map_is_closed_by_walls(const char *pathname);
+bool	map_is_closed_by_walls(t_map *map);
 
 // ### PARSING ###
+int		get_x_len(const char *map_path);
+int		get_y_len(const char *map_path);
+void	skip_lines(int fd, char *line, int nb_to_skip);
+void	fill_grid(t_map *map);
 int		ft_strtol(char *str);
-void	fill_map_struct(const char *map_path, t_map *parsed_struct);
+int		set_color_limit(int val);
+int		get_color_from_string(char *str);
+void	get_textures(t_map *map);
+void	fill_map_struct(const char *map_path, t_map *map);
+void	display_map(t_map *map);
+
+// ### TERM DISPLAY ###
+void	display_grid(char **grid);
 void	display_map(t_map *map);
 
 // ### HANDLE ERROR ###
 void	ft_error_msg(char *msg, int exit_code);
-
-
 
 #endif

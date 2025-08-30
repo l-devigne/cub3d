@@ -6,58 +6,11 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:49:23 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/29 14:47:10 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/08/30 11:26:55 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
-
-bool	extension_is_correct(const char *map_path, size_t len_map)
-{
-	if (map_path[len_map - 1] != 'b')
-		return (false);
-	if (map_path[len_map - 2] != 'u')
-		return (false);
-	if (map_path[len_map - 3] != 'c')
-		return (false);
-	if (map_path[len_map - 4] != '.')
-		return (false);
-	return (true);
-}
-
-int	get_safe_fd(const char *map_path)
-{
-	int	fd;
-
-	fd = open(map_path, O_RDONLY);
-	if (fd < 0)
-		ft_error_msg("Unable to open file.\n", 1);
-	return (fd);
-}
-
-bool	check_content(const char *map_path)
-{
-	/* need to implement checking for textures, colors etc. */
-	if (!map_is_closed_by_walls(map_path))
-		return (false);
-	return (true);
-}
-
-bool	is_valid(const char *map_path)
-{
-	size_t		len_map;
-
-	len_map = ft_strlen(map_path);
-	if (!map_path)
-		return (false);
-	if (!extension_is_correct(map_path, len_map))
-		return (false);
-	if (get_safe_fd(map_path) == -1)
-		return (false);
-	else
-		return (check_content(map_path));
-	return (true);
-}
 
 int	get_x_len(const char *map_path)
 {
@@ -68,7 +21,7 @@ int	get_x_len(const char *map_path)
 
 	i = 0;
 	x = 0;
-	fd = get_safe_fd(map_path);
+	fd = get_safe_fd(map_path, KEEP_OPEN);
 	while (i++ < 8)// on skip les 8 premieres lignes
 	{
 		line = get_next_line(fd);
@@ -96,7 +49,7 @@ int	get_y_len(const char *map_path)
 	
 
 	y = -8;// need to return total lines in files BUT ignoring 8 first lines
-	fd = get_safe_fd(map_path);
+	fd = get_safe_fd(map_path, KEEP_OPEN);
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -192,7 +145,7 @@ void	fill_grid(t_map *map)
 	char	*line;
 	int		y;
 
-	fd = get_safe_fd(map->map_path);
+	fd = get_safe_fd(map->map_path, KEEP_OPEN);
 	line = NULL;
 	map->grid = NULL;
 	printf("x_len:%d | y_len:%d\n", map->x_len, map->y_len);
@@ -291,9 +244,8 @@ void	get_textures(t_map *map)
 	int		fd;
 	char	*line;
 
-	fd = get_safe_fd(map->map_path);
+	fd = get_safe_fd(map->map_path, KEEP_OPEN);
 	line = get_next_line(fd);
-
 	while (line)
 	{
 		if (!ft_strncmp(line, "NO ./", 3))
