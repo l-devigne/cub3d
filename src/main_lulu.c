@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:49:21 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/29 14:15:43 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/08/30 10:53:51 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,7 @@ int	main(int ac, char **av)
 	/* Entry file is correct - let's do the parsing */
 	printf("Welcome in cub3d\n");
 	fill_map_struct(av[1], map);
+	if (!map_is_closed_by_walls(map))
+		return (ft_clear_map(map, 1), 1);
 	display_map(map);
 }
