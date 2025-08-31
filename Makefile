@@ -32,6 +32,7 @@ SRC =	src/quit_clean.c \
 		src/key_press_management.c \
 		src/move_keys.c \
 		src/view_turn_keys.c \
+		src/stay_in_map.c \
 		src/utils.c \
 		src/init.c \
 		src/main_alex.c
