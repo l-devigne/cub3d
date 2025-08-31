@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:49:21 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/30 10:53:51 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/08/31 09:16:03 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	ft_clear_map(t_map *map, int error_code)
 	char_free_null(map->north_texture);
 	char_free_null(map->south_texture);
 	tab_free_null(map->grid);
+	free(map);
 	if (error_code == 1)
 		ft_error_msg("Error!\n", 1);
 }
@@ -74,4 +75,5 @@ int	main(int ac, char **av)
 	if (!map_is_closed_by_walls(map))
 		return (ft_clear_map(map, 1), 1);
 	display_map(map);
+	ft_clear_map(map, 0);
 }

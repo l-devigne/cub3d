@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 11:38:04 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/30 13:24:27 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/08/31 09:46:25 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ int		check_right(t_map *map, int i, int j)
 	bool	right;
 	int		tmp;
 
+	right = false;
 	tmp = j;
 	while (map->grid[i][j])
 	{
@@ -153,6 +154,7 @@ int		check_up(t_map *map, int i, int j)
 	bool	up;
 	int		tmp;
 
+	up = false;
 	tmp = j;
 	while (map->grid[i][j])
 	{
@@ -176,6 +178,7 @@ int		check_down(t_map *map, int i, int j)
 	bool	down;
 	int		tmp;
 
+	down = false;
 	tmp = j;
 	while (map->grid[i][j])
 	{

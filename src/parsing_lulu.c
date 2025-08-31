@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:49:23 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/30 11:26:55 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/08/31 09:29:44 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@ int	get_x_len(const char *map_path)
 	int		fd;
 	int		x;
 	int		i;
+	int		nb_to_skip;
 
-	i = 0;
 	x = 0;
+	nb_to_skip = get_lines_num_to_skip(map_path);
 	fd = get_safe_fd(map_path, KEEP_OPEN);
-	while (i++ < 8)// on skip les 8 premieres lignes
+	while (nb_to_skip-- > 0)
 	{
 		line = get_next_line(fd);
 		free(line);
@@ -48,7 +49,7 @@ int	get_y_len(const char *map_path)
 	int		y;
 	
 
-	y = -8;// need to return total lines in files BUT ignoring 8 first lines
+	y = 0;
 	fd = get_safe_fd(map_path, KEEP_OPEN);
 	line = get_next_line(fd);
 	while (line)
@@ -59,6 +60,7 @@ int	get_y_len(const char *map_path)
 	}
 	if (line)
 		free(line);
+	y -= get_lines_num_to_skip(map_path);
 	return (close(fd), y);
 }
 
@@ -152,7 +154,7 @@ void	fill_grid(t_map *map)
 	map->grid = malloc(sizeof(char *) * (map->y_len + 1));
 	if (!(map->grid))
 		ft_clear_map(map, 1);
-	skip_lines(fd, line, 8);
+	skip_lines(fd, line, map->num_of_lines_to_skip);
 	y = 0;
 	while (y < map->y_len)
 	{
@@ -236,7 +238,7 @@ int	get_color_from_string(char *str)
 	r = set_color_limit(r);
 	g = set_color_limit(g);
 	b = set_color_limit(b);
-	return ((r << 16) | (g << 8) | b);
+	return (free(str), (r << 16) | (g << 8) | b);// need to free (str) cause malloc inside itoa
 }
 
 void	get_textures(t_map *map)
@@ -266,9 +268,41 @@ void	get_textures(t_map *map)
 	close (fd);
 }
 
+int		get_lines_num_to_skip(const char *map_path)
+{
+	int			fd;
+	char		*line;
+	int			line_count;
+
+	line_count = 0;
+	fd = get_safe_fd(map_path, KEEP_OPEN);
+	line = get_next_line(fd);
+	while (line)
+	{
+		if (!ft_strncmp(line, "NO", 2) || !ft_strncmp(line, "SO", 2)
+			|| !ft_strncmp(line, "WE", 2) || !ft_strncmp(line, "EA", 2))
+		{
+			free(line);
+			line = get_next_line(fd);
+			line_count++;
+		}
+		else if (!ft_strcmp(line, "\n") || !ft_strncmp(line, "F ", 2)
+				|| !ft_strncmp(line, "C ", 2))
+		{
+			free(line);
+			line = get_next_line(fd);
+			line_count++;
+		}
+		else
+			break;
+	}
+	return (free(line), close(fd), (line_count));
+}
+
 void	fill_map_struct(const char *map_path, t_map *map)
 {
 	map->map_path = ft_strdup(map_path);
+	map->num_of_lines_to_skip = get_lines_num_to_skip(map_path);
 	map->x_len = get_x_len(map_path);
 	map->y_len = get_y_len(map_path);
 	get_textures(map);
@@ -311,6 +345,6 @@ void	display_map(t_map *map)
 		printf("W: %s", map->west_texture);
 	printf("Floor color : %d\n", map->floor_color);
 	printf("Ceiling color : %d\n", map->ceiling_color);
-	printf("Grid\n");
+	printf("Grid starts at line %d\n", map->num_of_lines_to_skip);
 	display_grid(map->grid);
 }
