@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:49:23 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/31 09:29:44 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/08/31 19:47:33 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,23 @@ void	skip_lines(int fd, char *line, int nb_to_skip)
 	}
 }
 
+void	fill_single_line(t_map *map, char *line, int y)
+{
+	int	x;
+
+
+	map->grid[y] = malloc(sizeof(char) * (map->x_len + 1)); // +1 pour \0
+	if (!map->grid[y])
+		ft_clear_map(map, 1);
+	x = 0;
+	while (x < map->x_len && line[x] && line[x] != '\n')
+	{
+		map->grid[y][x] = line[x];
+		x++;
+	}
+	map->grid[y][x] = '\0';
+}
+
 void	fill_grid(t_map *map)
 {
 	int		fd;
@@ -161,16 +178,7 @@ void	fill_grid(t_map *map)
 		line = get_next_line(fd);
 		if (!line)
 			break;
-		map->grid[y] = malloc(sizeof(char) * (map->x_len + 1)); // +1 pour \0
-		if (!map->grid[y])
-			ft_clear_map(map, 1);
-		int x = 0;
-		while (x < map->x_len && line[x] && line[x] != '\n')
-		{
-			map->grid[y][x] = line[x];
-			x++;
-		}
-		map->grid[y][x] = '\0';
+		fill_single_line(map, line, y);
 		free(line);
 		y++;
 	}
