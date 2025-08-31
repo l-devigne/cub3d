@@ -28,6 +28,7 @@ typedef struct s_img
 typedef struct s_map
 {
 	char	*map_path;
+	int		num_of_lines_to_skip;
 	char	**grid;
 	char	*north_texture;
 	char	*south_texture;
@@ -91,6 +92,7 @@ bool	is_line_full_wall(char *line);
 bool	map_is_closed_by_walls(t_map *map);
 
 // ### PARSING ###
+int		get_lines_num_to_skip(const char *map_path);
 int		get_x_len(const char *map_path);
 int		get_y_len(const char *map_path);
 void	skip_lines(int fd, char *line, int nb_to_skip);
