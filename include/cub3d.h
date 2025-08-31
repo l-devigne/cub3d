@@ -207,4 +207,8 @@ int handle_keys(t_data *data);
 int detect_key_release(int keysym, t_data *data);
 int detect_key_press(int keysym, t_data *data);
 
+// ### STAY IN MAP ###
+bool move_to_wall(t_data *data, float new_x, float new_y);
+
+
 #endif
