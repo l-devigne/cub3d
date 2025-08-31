@@ -77,7 +77,7 @@ int		click_cross(t_data *data);
 int		esc_key(int keysym, t_data *data);
 void	ft_clear_map(t_map *map, int error_code);
 void	tab_free_null(char **tab);
-void	char_free_null(char *s);
+void	char_free_null(char **s);
 
 // ### INIT ###
 t_img initialize_image(void *mlx, int width, int height);
@@ -87,6 +87,7 @@ bool	is_valid(const char *map_path);
 bool	extension_is_correct(const char *map_path, size_t len_map);
 int		get_safe_fd(const char *map_path, int flag);
 bool	check_content(const char *map_path);
+bool	no_walls_alone(const char *map_path);
 bool	process_line_check(const char *line);
 bool	is_line_full_wall(char *line);
 bool	map_is_closed_by_walls(t_map *map);
@@ -96,6 +97,7 @@ int		get_lines_num_to_skip(const char *map_path);
 int		get_x_len(const char *map_path);
 int		get_y_len(const char *map_path);
 void	skip_lines(int fd, char *line, int nb_to_skip);
+void	fill_single_line(t_map *map, char *line, int y);
 void	fill_grid(t_map *map);
 int		ft_strtol(char *str);
 int		set_color_limit(int val);

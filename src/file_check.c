@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 11:38:04 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/31 09:46:25 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/08/31 19:48:59 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ bool	is_valid(const char *map_path)
 		return (false);
 	if (get_safe_fd(map_path, CLOSE) == -1)
 		return (false);
+	// if (!no_walls_alone(map_path))
+	// 	return (false);
 	// else
 	// 	return (check_content(map_path));// we check that later after parsing
 	return (true);
@@ -60,6 +62,33 @@ int	get_safe_fd(const char *map_path, int flag)
 // 		return (false);
 // 	return (true);
 // }
+
+bool	no_walls_alone(const char *map_path)
+{
+	int		start;
+	int		fd;
+	char	*line;
+
+	fd = open(map_path, O_RDONLY);
+	if (fd < 0)
+		return (false);
+	start = get_lines_num_to_skip(map_path);
+	while (start-- > 0)
+	{
+		line = get_next_line(fd);
+		free(line);
+	}
+	line = get_next_line(fd);
+	printf("no_walls_alone 1st line : [%s]\n", line);
+	while (line)
+	{
+		if (!ft_strcmp(line, "\n"))
+			return (close(fd), free(line), false);
+		free(line);
+		line = get_next_line(fd);
+	}
+	return (close(fd), true);
+}
 
 bool	process_line_check(const char *line)
 {
