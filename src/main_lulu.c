@@ -12,12 +12,6 @@
 
 #include "../include/cub3d.h"
 
-void	ft_error_msg(char *msg, int exit_code)
-{
-	printf("%s", msg);
-	exit(exit_code);
-}
-
 void	char_free_null(char **s)
 {
 	if (*s)
@@ -57,24 +51,24 @@ void	ft_clear_map(t_map *map, int error_code)
 		ft_error_msg("Error!\n", 1);
 }
 
-int	main(int ac, char **av)
-{
-	t_map	*map;//struct to parse from map_path file
+// int	main(int ac, char **av)
+// {
+// 	t_map	*map;//struct to parse from map_path file
 	
-	map = NULL;
-	map = malloc(sizeof(t_map));
-	if (!map)
-		ft_error_msg("Malloc failed.\n", 1);
-	ft_memset(map, 0, sizeof(t_map));// pour init tous les ptrs de la struct a NULL
-	if (ac != 2)
-		return (ft_error_msg("Wrong number of arguments\n", 1), 1);
-	if (!is_valid(av[1]))// goes to global function tester
-		return (ft_error_msg("Error with map file\n", 1), 1);
-	/* Entry file is correct - let's do the parsing then verify walls etc */
-	fill_map_struct(av[1], map);
-	if (!map_is_closed_by_walls(map))
-		return (ft_clear_map(map, 1), 1);
-	printf("Welcome in cub3d\n");
-	display_map(map);
-	ft_clear_map(map, 0);
-}
+// 	map = NULL;
+// 	map = malloc(sizeof(t_map));
+// 	if (!map)
+// 		ft_error_msg("Malloc failed.\n", 1);
+// 	ft_memset(map, 0, sizeof(t_map));// pour init tous les ptrs de la struct a NULL
+// 	if (ac != 2)
+// 		return (ft_error_msg("Wrong number of arguments\n", 1), 1);
+// 	if (!is_valid(av[1]))// goes to global function tester
+// 		return (ft_error_msg("Error with map file\n", 1), 1);
+// 	/* Entry file is correct - let's do the parsing then verify walls etc */
+// 	fill_map_struct(av[1], map);
+// 	if (!map_is_closed_by_walls(map))
+// 		return (ft_clear_map(map, 1), 1);
+// 	printf("Welcome in cub3d\n");
+// 	display_map(map);
+// 	ft_clear_map(map, 0);
+// }
