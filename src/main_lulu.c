@@ -3,53 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main_lulu.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meruem <meruem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:49:21 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/09/01 10:09:14 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/09/01 22:30:19 by meruem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-void	char_free_null(char **s)
-{
-	if (*s)
-	{
-		free(*s);
-		*s = NULL;
-	}
-}
 
-void	tab_free_null(char **tab)
-{
-	int	i;
-
-	i = 0;
-	if (!tab)
-		return ;
-	while (tab && tab[i])
-	{
-		free(tab[i]);
-		tab[i] = NULL;
-		i++;
-	}
-	free(tab);
-	tab = NULL;
-}
-
-void	ft_clear_map(t_map *map, int error_code)
-{
-	char_free_null(&map->north_texture);
-	char_free_null(&map->south_texture);
-	char_free_null(&map->west_texture);
-	char_free_null(&map->east_texture);
-	char_free_null(&map->map_path);
-	tab_free_null(map->grid);
-	free(map);
-	if (error_code == 1)
-		ft_error_msg("Error!\n", 1);
-}
 
 // int	main(int ac, char **av)
 // {
