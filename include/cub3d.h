@@ -39,6 +39,7 @@ typedef struct s_map
 	char	*east_texture;
 	int 	floor_color;
 	int 	ceiling_color;
+	char *wall_path_choice;
 	int		x_len;
 	int		y_len;
 } t_map;
@@ -160,7 +161,7 @@ void	display_map(t_map *map);
 // ### HANDLE ERROR ###
 void	ft_error_msg(char *msg, int exit_code);
 bool	is_map_square(const char *pathname);
-bool	map_is_closed_by_walls(const char *pathname);
+// bool	map_is_closed_by_walls(const char *pathname);
 bool	only_valid_chars(const char *pathname);
 bool	is_valid(const char *map);
 

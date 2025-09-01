@@ -256,16 +256,17 @@ void	get_textures(t_map *map)
 
 	fd = get_safe_fd(map->map_path, KEEP_OPEN);
 	line = get_next_line(fd);
+	printf("line get_textures: %s\n", line);
 	while (line)
 	{
-		if (!ft_strncmp(line, "NO ./", 3))
-			map->north_texture = ft_strdup(line);
-		else if (!ft_strncmp(line, "SO ./", 3))
-			map->south_texture = ft_strdup(line);
-		else if (!ft_strncmp(line, "WE ./", 3))
-			map->west_texture = ft_strdup(line);
-		else if (!ft_strncmp(line, "EA ./", 3))
-			map->east_texture = ft_strdup(line);
+		if (!ft_strncmp(line, "NO ", 3))
+			map->north_texture = ft_strdup(line + 3);
+		else if (!ft_strncmp(line, "SO ", 3))
+			map->south_texture = ft_strdup(line + 3);
+		else if (!ft_strncmp(line, "WE ", 3))
+			map->west_texture = ft_strdup(line + 3);
+		else if (!ft_strncmp(line, "EA ", 3))
+			map->east_texture = ft_strdup(line + 3);
 		else if (!ft_strncmp(line, "F ", 1))
 			map->floor_color = get_color_from_string(line + 2);
 		else if (!ft_strncmp(line, "C ", 1))

@@ -35,6 +35,7 @@ SRC =	src/quit_clean.c \
 		src/stay_in_map.c \
 		src/utils.c \
 		src/init.c \
+		src/main_lulu.c \
 		src/main_alex.c
 
 GREEN = \033[32m

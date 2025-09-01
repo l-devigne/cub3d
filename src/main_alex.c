@@ -114,23 +114,31 @@ void init_keys(t_data *data, t_keys *keys)
     data->keys = keys;
 }
 
-int	main(void)
+int	main(int ac, char **av)
 {
     t_data data;
-    t_map  test_map;
+    t_map  map;
     t_player  player;
     t_texture  texture;
     t_keys  keys;
 
+    if (ac != 2)
+        return (ft_error_msg("Wrong number of arguments\n", 1), 1);
+
     texture.tex_img = NULL;
-    init_test(&test_map);
-    init_player(test_map.grid, &player);
-    print_map(test_map);
+    // init_test(&test_map);
+    // init_player(test_map.grid, &player);
+    if (!is_valid(av[1]))// goes to global function tester
+		return (ft_error_msg("Error with map file\n", 1), 1);
+    fill_map_struct(av[1], &map);
+	if (!map_is_closed_by_walls(&map))
+		return (ft_clear_map(&map, 1), 1);
+    print_map(map);
 	data.mlx = mlx_init();
 	data.win = mlx_new_window(data.mlx, 1700, 1000, "CUB3D");
     data.img = initialize_image(data.mlx, 1500, 800);
     data.player = &player;
-    data.map = &test_map;
+    data.map = &map;
     data.text = &texture;
     init_keys(&data, &keys);
     data.screen_height = 800;
@@ -146,3 +154,22 @@ int	main(void)
     mlx_loop(data.mlx);
 	return (0);
 }
+
+// int	main(int ac, char **av)
+// {
+// 	t_map	*map;//struct to parse from map_path file
+	
+// 	map = NULL;
+// 	map = malloc(sizeof(t_map));
+// 	if (!map)
+// 		ft_error_msg("Malloc failed.\n", 1);
+// 	ft_memset(map, 0, sizeof(t_map));// pour init tous les ptrs de la struct a NULL
+
+// 	/* Entry file is correct - let's do the parsing then verify walls etc */
+// 	fill_map_struct(av[1], map);
+// 	if (!map_is_closed_by_walls(map))
+// 		return (ft_clear_map(map, 1), 1);
+// 	printf("Welcome in cub3d\n");
+// 	display_map(map);
+// 	ft_clear_map(map, 0);
+// }
