@@ -6,7 +6,7 @@
 /*   By: meruem <meruem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 14:55:11 by meruem            #+#    #+#             */
-/*   Updated: 2025/08/31 15:12:10 by meruem           ###   ########.fr       */
+/*   Updated: 2025/09/01 22:46:51 by meruem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool move_to_wall(t_data *data, float new_x, float new_y)
 
     mapx = (int)new_x;
     mapy = (int)new_y;
-    if(data->map->grid[mapy][mapx] == '1')
+    if(!(data->map->grid[mapy][mapx]) || data->map->grid[mapy][mapx] == '1')
         return (1);
     return (0);
 }
