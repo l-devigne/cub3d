@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_lulu.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meruem <meruem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:49:23 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/09/01 10:43:51 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/09/01 22:22:45 by meruem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,32 +249,56 @@ int	get_color_from_string(char *str)
 	return (free(str), (r << 16) | (g << 8) | b);// need to free (str) cause malloc inside itoa
 }
 
-void	get_textures(t_map *map)
+char    *get_str_without_eol(char *s)
 {
-	int		fd;
-	char	*line;
+    int        size_to_dup;
+    char    *copy;
+    int        i;
 
-	fd = get_safe_fd(map->map_path, KEEP_OPEN);
-	line = get_next_line(fd);
-	printf("line get_textures: %s\n", line);
-	while (line)
-	{
-		if (!ft_strncmp(line, "NO ", 3))
-			map->north_texture = ft_strdup(line + 3);
-		else if (!ft_strncmp(line, "SO ", 3))
-			map->south_texture = ft_strdup(line + 3);
-		else if (!ft_strncmp(line, "WE ", 3))
-			map->west_texture = ft_strdup(line + 3);
-		else if (!ft_strncmp(line, "EA ", 3))
-			map->east_texture = ft_strdup(line + 3);
-		else if (!ft_strncmp(line, "F ", 1))
-			map->floor_color = get_color_from_string(line + 2);
-		else if (!ft_strncmp(line, "C ", 1))
-			map->ceiling_color = get_color_from_string(line + 2);
-		free(line);
-		line = get_next_line(fd);
-	}
-	close (fd);
+    if (!s)
+        return (NULL);
+    size_to_dup = 0;
+    while (s[size_to_dup] && s[size_to_dup] != '\n')
+        size_to_dup++;
+    copy = malloc(sizeof(char) * (size_to_dup + 1));
+    if (!copy)
+        return (NULL);
+    i = 0;
+    while (i < size_to_dup)
+    {
+        copy[i] = s[i];
+        i++;
+    }
+    copy[i] = '\0';
+    return (copy);
+}
+
+void    get_textures(t_map *map)
+{
+    int        fd;
+    char    *line;
+
+    fd = get_safe_fd(map->map_path, KEEP_OPEN);
+    line = get_next_line(fd);
+    printf("line is %s\n", line);
+    while (line)
+    {
+        if (!ft_strncmp(line, "NO ", 3))
+            map->north_texture = get_str_without_eol(line + 3);
+        else if (!ft_strncmp(line, "SO ", 3))
+            map->south_texture = get_str_without_eol(line + 3);
+        else if (!ft_strncmp(line, "WE ", 3))
+            map->west_texture = get_str_without_eol(line + 3);
+        else if (!ft_strncmp(line, "EA ", 3))
+            map->east_texture = get_str_without_eol(line + 3);
+        else if (!ft_strncmp(line, "F ", 1))
+            map->floor_color = get_color_from_string(line + 2);
+        else if (!ft_strncmp(line, "C ", 1))
+            map->ceiling_color = get_color_from_string(line + 2);
+        free(line);
+        line = get_next_line(fd);
+    }
+    close (fd);
 }
 
 int		get_lines_num_to_skip(const char *map_path)
@@ -304,6 +328,11 @@ int		get_lines_num_to_skip(const char *map_path)
 		}
 		else
 			break;
+	}
+	while(line)
+	{
+		free(line);
+		line = get_next_line(fd);
 	}
 	return (free(line), close(fd), (line_count));
 }
