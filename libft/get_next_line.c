@@ -12,98 +12,88 @@
 
 #include "./libft.h"
 
-char	*ft_read(char *full_buf, int fd)
+// fonction to complete static char* from get_next_line using fd until nl/eof
+char	*ft_line(int fd, char *reponse)
 {
-	int		byte_read;
-	char	*buf;
+	int		read_bytes;
+	char	*buffer;
+	char	*retour;
 
-	if (full_buf == NULL)
-		full_buf = ft_calloc_gnl(1, sizeof(char));
-	buf = ft_calloc_gnl(BUFFER_SIZE + 1, sizeof(char));
-	byte_read = 1;
-	while (byte_read > 0)
+	retour = ft_join(reponse, NULL, 3);
+	while (ft_get_index(retour, '\n') == -1)
 	{
-		byte_read = read(fd, buf, BUFFER_SIZE);
-		if (byte_read < 0 || buf == NULL)
+		buffer = malloc (BUFFER_SIZE + 1);
+		if (buffer == NULL)
+			return (ft_free(retour), NULL);
+		read_bytes = read(fd, buffer, BUFFER_SIZE);
+		if (read_bytes == -1)
+			return (ft_free(buffer), ft_free(retour), NULL);
+		if (read_bytes == 0)
+			return (ft_free(buffer), retour);
+		buffer[read_bytes] = '\0';
+		retour = ft_join(retour, buffer, 3);
+		if (!retour)
+			return (NULL);
+	}
+	return (retour);
+}
+
+// cut source into 1 str before the first \n and the rest
+struct	string	*ft_cut(char *source)
+{
+	struct string	*reponse;
+	int				i;
+	int				j;
+
+	reponse = malloc (1 * sizeof(struct string));
+	if (reponse == NULL)
+		return (NULL);
+	reponse->last = NULL;
+	i = ft_get_index(source, '\n');
+	if (i != -1)
+	{
+		reponse->first = ft_copy(source, 0, (i - 1));
+		j = ft_get_index(source, '\0');
+		reponse->last = ft_copy(source, i + 1, j);
+		if (reponse->last == NULL)
 		{
-			free(full_buf);
-			free(buf);
-			return (NULL);
+			reponse->last = (char *) malloc (1);
+			if (reponse->last == NULL)
+				return (ft_free(reponse->first), NULL);
+			reponse->last[0] = '\0';
 		}
-		buf[byte_read] = '\0';
-		full_buf = ft_realloc_gnl(full_buf, buf);
-		if (full_buf == NULL)
-			return (NULL);
-		if (ft_strchr_split(full_buf, '\n'))
-			break ;
 	}
-	free(buf);
-	return (full_buf);
+	else
+		reponse->first = ft_join(source, NULL, 3);
+	return (reponse);
 }
 
-char	*ft_line(char *full_buf)
-{
-	int		i;
-	int		j;
-	char	*line;
-
-	i = 0;
-	j = 0;
-	if (!full_buf[i])
-		return (NULL);
-	while (full_buf[i] != '\n' && full_buf[i])
-		i++;
-	line = ft_calloc_gnl((i + 2), 1);
-	if (line == NULL)
-		return (NULL);
-	i = 0;
-	while (full_buf[i] != '\n' && full_buf[i])
-		line[j++] = full_buf[i++];
-	if (full_buf[i] == '\n' && full_buf[i])
-		line[j] = '\n';
-	return (line);
-}
-
-char	*ft_stay(char *full_buf)
-{
-	char	*stay;
-	int		i;
-	int		len;
-
-	i = 0;
-	len = 0;
-	while (full_buf[i] && full_buf[i] != '\n')
-		i++;
-	if (full_buf[i] == '\n')
-		i++;
-	if (!full_buf[i])
-	{
-		free(full_buf);
-		return (NULL);
-	}
-	while (full_buf[i + len])
-		len++;
-	stay = ft_calloc_gnl(len + 1, 1);
-	if (stay == NULL)
-		return (NULL);
-	len = 0;
-	while (full_buf[i])
-		stay[len++] = full_buf[i++];
-	free(full_buf);
-	return (stay);
-}
-
+// main function
 char	*get_next_line(int fd)
 {
-	char		*line;
-	static char	*full_buf;
+	char			*copy_first;
+	static char		*new_string;
+	struct string	*tab;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd == -1 || BUFFER_SIZE < 1)
+		return (ft_free(new_string), NULL);
+	new_string = ft_line(fd, new_string);
+	if (new_string == NULL)
 		return (NULL);
-	full_buf = ft_read(full_buf, fd);
-	if (full_buf == NULL)
+	tab = ft_cut(new_string);
+	if (tab == NULL)
 		return (NULL);
-	line = ft_line(full_buf);
-	full_buf = ft_stay(full_buf);
-	return (line);
+	if (tab->last != NULL)
+		ft_free(new_string);
+	new_string = tab->last;
+	copy_first = tab->first;
+	ft_free(tab);
+	if (copy_first == NULL && new_string == NULL)
+		return (NULL);
+	if (copy_first == NULL)
+		return (ft_join("\n", NULL, 0));
+	if (new_string != NULL)
+		return (ft_join(copy_first, "\n", 2));
+	else
+		return (ft_join(copy_first, NULL, 3));
 }
