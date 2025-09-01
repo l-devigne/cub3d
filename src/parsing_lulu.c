@@ -58,8 +58,7 @@ int	get_y_len(const char *map_path)
 		free(line);
 		line = get_next_line(fd);
 	}
-	if (line)
-		free(line);
+	close(fd);
 	y -= get_lines_num_to_skip(map_path);
 	return (close(fd), y);
 }
@@ -249,6 +248,30 @@ int	get_color_from_string(char *str)
 	return (free(str), (r << 16) | (g << 8) | b);// need to free (str) cause malloc inside itoa
 }
 
+char	*get_str_without_eol(char *s)
+{
+	int		size_to_dup;
+	char	*copy;
+	int		i;
+
+	if (!s)
+		return (NULL);
+	size_to_dup = 0;
+	while (s[size_to_dup] && s[size_to_dup] != '\n')
+		size_to_dup++;
+	copy = malloc(sizeof(char) * (size_to_dup + 1));
+	if (!copy)
+		return (NULL);
+	i = 0;
+	while (i < size_to_dup)
+	{
+		copy[i] = s[i];
+		i++;
+	}
+	copy[i] = '\0';
+	return (copy);
+}
+
 void	get_textures(t_map *map)
 {
 	int		fd;
@@ -256,16 +279,17 @@ void	get_textures(t_map *map)
 
 	fd = get_safe_fd(map->map_path, KEEP_OPEN);
 	line = get_next_line(fd);
+	printf("line is %s\n", line);
 	while (line)
 	{
-		if (!ft_strncmp(line, "NO ./", 3))
-			map->north_texture = ft_strdup(line);
-		else if (!ft_strncmp(line, "SO ./", 3))
-			map->south_texture = ft_strdup(line);
-		else if (!ft_strncmp(line, "WE ./", 3))
-			map->west_texture = ft_strdup(line);
-		else if (!ft_strncmp(line, "EA ./", 3))
-			map->east_texture = ft_strdup(line);
+		if (!ft_strncmp(line, "NO ", 3))
+			map->north_texture = get_str_without_eol(line + 3);
+		else if (!ft_strncmp(line, "SO ", 3))
+			map->south_texture = get_str_without_eol(line + 3);
+		else if (!ft_strncmp(line, "WE ", 3))
+			map->west_texture = get_str_without_eol(line + 3);
+		else if (!ft_strncmp(line, "EA ", 3))
+			map->east_texture = get_str_without_eol(line + 3);
 		else if (!ft_strncmp(line, "F ", 1))
 			map->floor_color = get_color_from_string(line + 2);
 		else if (!ft_strncmp(line, "C ", 1))
@@ -285,6 +309,7 @@ int		get_lines_num_to_skip(const char *map_path)
 	line_count = 0;
 	fd = get_safe_fd(map_path, KEEP_OPEN);
 	line = get_next_line(fd);
+	printf("First time fd is called : %s\n", line);
 	while (line)
 	{
 		if (!ft_strncmp(line, "NO", 2) || !ft_strncmp(line, "SO", 2)
@@ -304,7 +329,14 @@ int		get_lines_num_to_skip(const char *map_path)
 		else
 			break;
 	}
-	return (free(line), close(fd), (line_count));
+	// Vider le buffer de get_next_line en lisant jusqu'à EOF
+	while (line)
+	{
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
+	return (line_count);
 }
 
 void	fill_map_struct(const char *map_path, t_map *map)
@@ -344,13 +376,13 @@ void	display_map(t_map *map)
 	if (map->map_path)
 		printf("File name : %s\n", map->map_path);
 	if (map->east_texture)
-		printf("E: %s", map->east_texture);
+		printf("E: %s\n", map->east_texture);
 	if (map->north_texture)
-		printf("N: %s", map->north_texture);
+		printf("N: %s\n", map->north_texture);
 	if (map->south_texture)
-		printf("S: %s", map->south_texture);
+		printf("S: %s\n", map->south_texture);
 	if (map->west_texture)
-		printf("W: %s", map->west_texture);
+		printf("W: %s\n", map->west_texture);
 	printf("Floor color : %d\n", map->floor_color);
 	printf("Ceiling color : %d\n", map->ceiling_color);
 	printf("Grid starts at line %d\n", map->num_of_lines_to_skip);
