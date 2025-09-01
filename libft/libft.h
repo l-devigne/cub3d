@@ -116,17 +116,25 @@ char	*ft_realloc(char *ptr, size_t size);
 // GET_NEXT_LINE
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 99999
+#  define BUFFER_SIZE 10
 # endif
 
-char	*ft_realloc_gnl(char *full_buf, char *buf);
-char	*ft_strjoin_gnl(char const *s1, char const *s2);
-int		ft_strchr_split(char *str, char c);
-char	*ft_read(char *full_buf, int fd);
-char	*ft_line(char *full_buf);
-char	*ft_stay(char *full_buf);
-char	*get_next_line(int fd);
-void	*ft_calloc_gnl(size_t nb, size_t size);
+typedef struct string
+{
+	char	*first;
+	char	*last;
+}	t_STRING;
+
+char			*ft_nl(void);
+char			*ft_line(int fd, char *reponse);
+char			*get_next_line(int fd);
+int				ft_get_index(char *buffer, char sep);
+char			*ft_copy(char *source, int start, int end);
+struct	string	*ft_cut(char *source);
+char			*ft_join(char *s1, char *s2, int flag);
+void			ft_free(void *s);
+char			*ft_free_and_return_null(char *s1, char *s2, int flag);
+struct string	*malloc_and_check(struct string *reponse, int nb_bytes);
 
 // FT_PRINTF
 
