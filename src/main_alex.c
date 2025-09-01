@@ -6,7 +6,7 @@
 /*   By: meruem <meruem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:46:07 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/08/30 23:24:50 by meruem           ###   ########.fr       */
+/*   Updated: 2025/09/01 22:27:34 by meruem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void init_player(char **grid, t_player *player)
         j = 0;
         while(grid[i][j])
         {
-            if(grid[i][j] != '0' && grid[i][j] != '1')
+            if(grid[i][j] != '0' && grid[i][j] != '1' && grid[i][j] != ' ')
             {
                 player->x = ((float)j + ((float)j + 1)) / 2;
                 player->y= ((float)i + ((float)i + 1)) / 2;
@@ -127,13 +127,13 @@ int	main(int ac, char **av)
 
     texture.tex_img = NULL;
     // init_test(&test_map);
-    // init_player(test_map.grid, &player);
     if (!is_valid(av[1]))// goes to global function tester
 		return (ft_error_msg("Error with map file\n", 1), 1);
     fill_map_struct(av[1], &map);
 	if (!map_is_closed_by_walls(&map))
 		return (ft_clear_map(&map, 1), 1);
-    print_map(map);
+    init_player(map.grid, &player);
+    // print_map(map);
 	data.mlx = mlx_init();
 	data.win = mlx_new_window(data.mlx, 1700, 1000, "CUB3D");
     data.img = initialize_image(data.mlx, 1500, 800);
