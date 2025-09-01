@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:49:21 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/31 12:04:41 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/09/01 10:09:14 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	main(int ac, char **av)
 		return (ft_error_msg("Wrong number of arguments\n", 1), 1);
 	if (!is_valid(av[1]))// goes to global function tester
 		return (ft_error_msg("Error with map file\n", 1), 1);
-	/* Entry file is correct - let's do the parsing */
+	/* Entry file is correct - let's do the parsing then verify walls etc */
 	fill_map_struct(av[1], map);
 	if (!map_is_closed_by_walls(map))
 		return (ft_clear_map(map, 1), 1);

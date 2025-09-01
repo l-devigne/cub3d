@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 11:38:04 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/31 19:48:59 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/09/01 10:43:07 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,8 @@ bool	is_valid(const char *map_path)
 		return (false);
 	if (get_safe_fd(map_path, CLOSE) == -1)
 		return (false);
-	// if (!no_walls_alone(map_path))
-	// 	return (false);
-	// else
-	// 	return (check_content(map_path));// we check that later after parsing
+	if (!no_walls_alone(map_path))
+		return (false);
 	return (true);
 }
 
@@ -55,35 +53,26 @@ int	get_safe_fd(const char *map_path, int flag)
 	return (fd);
 }
 
-// bool	check_content(const char *map_path)
-// {
-// 	/* need to implement CHECKING for textures, colors etc. */
-// 	if (!map_is_closed_by_walls(map_path))
-// 		return (false);
-// 	return (true);
-// }
-
 bool	no_walls_alone(const char *map_path)
 {
-	int		start;
 	int		fd;
 	char	*line;
 
 	fd = open(map_path, O_RDONLY);
 	if (fd < 0)
 		return (false);
-	start = get_lines_num_to_skip(map_path);
-	while (start-- > 0)
-	{
-		line = get_next_line(fd);
-		free(line);
-	}
 	line = get_next_line(fd);
-	printf("no_walls_alone 1st line : [%s]\n", line);
+	while (line)
+	{
+		if (line[0] == '0' || line[0] == '1')
+			break;
+		free(line);
+		line = get_next_line(fd);
+	}
 	while (line)
 	{
 		if (!ft_strcmp(line, "\n"))
-			return (close(fd), free(line), false);
+			return (free(line), close(fd), false);
 		free(line);
 		line = get_next_line(fd);
 	}
