@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ray_direction.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aherlaud <aherlaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/26 16:11:57 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/08/28 15:44:01 by aherlaud         ###   ########.fr       */
+/*   Created: 2025/08/28 16:28:12 by aherlaud          #+#    #+#             */
+/*   Updated: 2025/08/28 16:57:33 by aherlaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-void	ft_error_msg(char *msg, int exit_code)
+float cameraX_choice(int screen_width, float camrange_index)
 {
-	printf("%s", msg);
-	exit(exit_code);
+    return (2 * camrange_index / (float)screen_width - 1);
 }
 
-size_t	ft_strlen(const char *str)
+t_coord *ray_direction(t_player *player, float cameraX)
 {
-	size_t	len_of_str;
+    t_coord *ray_dir;
 
-	len_of_str = 0;
-	if (!str || !*str)
-		return (0);
-	while (*str)
-	{
-		len_of_str++;
-		str++;
-	}
-	return (len_of_str);
+    ray_dir = malloc(sizeof(t_coord));
+    if(!ray_dir)
+        return (NULL);
+    ray_dir->x = player->dir_x + (player->plane_x * cameraX);
+    ray_dir->y = player->dir_y + (player->plane_y * cameraX);
+    
+    return (ray_dir);
 }

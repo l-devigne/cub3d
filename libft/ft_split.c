@@ -40,7 +40,7 @@ static size_t	ft_next(const char *s, char c)
 	return (i);
 }
 
-static char	**ft_free(char **dest, int i)
+static char	**ft_free_split(char **dest, int i)
 {
 	if (i > 0)
 	{
@@ -73,7 +73,7 @@ char	**ft_split(char const *s, char c)
 			break ;
 		dest[i] = (char *)ft_calloc(ft_next(s, c) + 1, sizeof(char));
 		if (dest[i] == NULL)
-			return (ft_free(dest, i));
+			return (ft_free_split(dest, i));
 		ft_strlcpy(dest[i], s, ft_next(s, c) + 1);
 		s += ft_next(s, c);
 		i++;
