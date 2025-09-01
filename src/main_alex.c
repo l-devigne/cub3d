@@ -6,7 +6,7 @@
 /*   By: meruem <meruem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:46:07 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/09/01 22:27:34 by meruem           ###   ########.fr       */
+/*   Updated: 2025/09/01 22:32:53 by meruem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ int	main(int ac, char **av)
     draw_whole_screen(&data);
     mlx_put_image_to_window(data.mlx, data.win, data.img.mlx_img, 50, 50);
 
+    mlx_hook(data.win, 17, 0, &click_cross, &data);
     mlx_hook(data.win, KeyPress, KeyPressMask, detect_key_press, &data);
     mlx_hook(data.win, KeyRelease, KeyReleaseMask, detect_key_release, &data);
     mlx_loop_hook(data.mlx, handle_keys, &data);
