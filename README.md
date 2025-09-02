@@ -1,3 +1,5 @@
+![Mon logo](logo.png)
+
 MATHS TO COMPUTE RAYS AND GET THE REAL DISTANCE TO WALL COORDINATES
 
 create player :
