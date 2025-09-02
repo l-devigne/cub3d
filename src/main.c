@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:46:07 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/09/02 13:31:13 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/09/02 22:04:15 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int ac, char **av)
 	texture.tex_img = NULL;
 	init_window_image(&data);
 	data.map = &map;
-	fill_map_struct(av[1], &map);
+	fill_map_struct(&data, av[1], &map);
 	if (!check_map(&map))
 		return (ft_clear_all(&data, 0), 1);
 	init_player(&data, map.grid, &player);
