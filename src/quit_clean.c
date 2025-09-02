@@ -53,15 +53,12 @@ void	ft_clear_map(t_map *map, int error_code)
 void	ft_clear_all(t_data *data)
 {
 	mlx_destroy_image(data->mlx, data->img.mlx_img);
-	mlx_destroy_image(data->mlx, data->text->tex_img);
+	if (data->text->tex_img)
+		mlx_destroy_image(data->mlx, data->text->tex_img);
 	mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
 	ft_clear_map(data->map, 0);
-	// free_tab_of_tab(data->tab->tab);
-	// free_tab_of_tab(data->tab->tab_color);
-	// free(data->tab);
-	// free(data);
 }
 
 int	click_cross(t_data *data)

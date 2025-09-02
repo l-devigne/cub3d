@@ -127,6 +127,13 @@ int	main(int ac, char **av)
 	// init_test(&test_map);
 	if (!is_file_valid(av[1])) // check the file (extension, fd etc)
 		return (ft_error_msg("Error with map file\n", 1), 1);
+	data.mlx = mlx_init();
+	if (!data.mlx)
+		return (free(data.mlx), 1);
+	data.win = mlx_new_window(data.mlx, 1700, 1000, "CUB3D");
+	if (!data.win)
+		return (mlx_destroy_display(data.mlx), free(data.mlx), 1);
+	data.img = initialize_image(data.mlx, 1500, 800);
 	fill_map_struct(av[1], &map); // load the map with the file
 	/* map is loaded -> need to check content of it */
 	if (!check_map(&map))
@@ -134,9 +141,6 @@ int	main(int ac, char **av)
 	/* END OF PARSING */
 	init_player(map.grid, &player);
 	// print_map(map);
-	data.mlx = mlx_init();
-	data.win = mlx_new_window(data.mlx, 1700, 1000, "CUB3D");
-	data.img = initialize_image(data.mlx, 1500, 800);
 	data.player = &player;
 	data.map = &map;
 	data.text = &texture;
