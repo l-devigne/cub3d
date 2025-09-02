@@ -6,13 +6,13 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 11:38:04 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/09/01 10:43:07 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/09/02 11:56:34 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-bool	is_valid(const char *map_path)
+bool	is_file_valid(const char *map_path)
 {
 	size_t		len_map;
 
@@ -241,5 +241,84 @@ bool	map_is_closed_by_walls(t_map *map)
 		}
 		i++;
 	}
+	return (true);
+}
+
+bool	map_get_valid_player(t_map *map)
+{
+	int		player_num;
+	int		i;
+	int		j;
+
+	if (!map || !map->grid)
+		return (false);
+	player_num = 0;
+	i = 0;
+	while(map->grid[i])
+	{
+		j = 0;
+		while (map->grid[i][j])
+		{
+			if (map->grid[i][j] == 'W' || map->grid[i][j] == 'N'
+			|| map->grid[i][j] == 'S' || map->grid[i][j] == 'E')
+				player_num++;
+			j++;
+		}
+		i++;
+	}
+	if (player_num == 1)
+		return (true);
+	return (false);
+}
+
+bool	map_get_only_valid_chars(t_map *map)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	if (!map || !map->grid)
+		return (false);
+	while(map->grid[i])
+	{
+		j = 0;
+		while (map->grid[i][j])
+		{
+			if (!(map->grid[i][j] == 'W' || map->grid[i][j] == 'N'
+			|| map->grid[i][j] == 'S' || map->grid[i][j] == 'E'
+			|| map->grid[i][j] == ' ' || map->grid[i][j] == '\n'
+			|| map->grid[i][j] == '0' || map->grid[i][j] == '1'))
+				return (false);
+			j++;
+		}
+		i++;
+	}
+	return (true);
+}
+
+bool	map_get_valid_textures(t_map *map)
+{
+	if (!map->north_texture || !map->south_texture ||
+    	!map->west_texture  || !map->east_texture)
+		return (false);
+	if (access(map->north_texture, R_OK) == -1
+		|| access(map->south_texture, R_OK) == -1
+		|| access(map->west_texture, R_OK) == -1
+		|| access(map->east_texture, R_OK) == -1)
+		return (false);
+	return (true);
+}
+
+
+bool	check_map(t_map *map)
+{
+	if (!map_get_valid_textures(map))
+		return (false);
+	if (!map_is_closed_by_walls(map))
+		return (false);
+	if (!map_get_valid_player(map))
+		return (false);
+	if (!map_get_only_valid_chars(map))
+		return (false);
 	return (true);
 }

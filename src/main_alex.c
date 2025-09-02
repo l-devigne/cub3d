@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_alex.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meruem <meruem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:46:07 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/09/01 22:32:53 by meruem           ###   ########.fr       */
+/*   Updated: 2025/09/02 11:48:05 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,12 +126,15 @@ int	main(int ac, char **av)
         return (ft_error_msg("Wrong number of arguments\n", 1), 1);
 
     texture.tex_img = NULL;
+	ft_memset(&map, 0, sizeof(map));// very important to set all data to null pointers before loading them
     // init_test(&test_map);
-    if (!is_valid(av[1]))// goes to global function tester
+    if (!is_file_valid(av[1]))// check the file (extension, fd etc)
 		return (ft_error_msg("Error with map file\n", 1), 1);
-    fill_map_struct(av[1], &map);
-	if (!map_is_closed_by_walls(&map))
+    fill_map_struct(av[1], &map);// load the map with the file
+	/* map is loaded -> need to check content of it */
+	if (!check_map(&map))
 		return (ft_clear_map(&map, 1), 1);
+	/* END OF PARSING */
     init_player(map.grid, &player);
     // print_map(map);
 	data.mlx = mlx_init();

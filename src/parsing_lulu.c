@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_lulu.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meruem <meruem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:49:23 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/09/01 22:22:45 by meruem           ###   ########.fr       */
+/*   Updated: 2025/09/02 11:55:08 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ void	fill_grid(t_map *map)
 	fd = get_safe_fd(map->map_path, KEEP_OPEN);
 	line = NULL;
 	map->grid = NULL;
-	printf("x_len:%d | y_len:%d\n", map->x_len, map->y_len);
+
 	map->grid = malloc(sizeof(char *) * (map->y_len + 1));
 	if (!(map->grid))
 		ft_clear_map(map, 1);
@@ -186,31 +186,6 @@ void	fill_grid(t_map *map)
 	close(fd);
 }
 
-int		ft_strtol(char *str)
-{
-	int	result;
-	int	i;
-
-	result = 0;
-	i = 0;
-	if (str[0] == '0' && (str[1] == 'x' || str[1] == 'X'))
-		i = 2;
-	while (str[i])
-	{
-		result *= 16;
-		if (str[i] >= '0' && str[i] <= '9')
-			result += str[i] - '0';
-		else if (str[i] >= 'A' && str[i] <= 'F')
-			result += str[i] - 'A' + 10;
-		else if (str[i] >= 'a' && str[i] <= 'f')
-			result += str[i] - 'a' + 10;
-		else
-			break ;
-		i++;
-	}
-    return (result);
-}
-
 int	set_color_limit(int val)
 {
 	if (val < 0)
@@ -227,12 +202,8 @@ int	get_color_from_string(char *str)
 	int		b;
 	char	*ptr;
 
-	r = 0;
-	g = 0;
-	b = 0;
-	str = ft_itoa(ft_strtol(str));
+	r = ft_atoi(str);
 	ptr = str;
-	r = ft_atoi(ptr);
 	while (*ptr && *ptr != ',')
 		ptr++;
 	if (*ptr == ',')
@@ -246,7 +217,7 @@ int	get_color_from_string(char *str)
 	r = set_color_limit(r);
 	g = set_color_limit(g);
 	b = set_color_limit(b);
-	return (free(str), (r << 16) | (g << 8) | b);// need to free (str) cause malloc inside itoa
+	return ((r << 16) | (g << 8) | b);
 }
 
 char    *get_str_without_eol(char *s)
@@ -280,7 +251,7 @@ void    get_textures(t_map *map)
 
     fd = get_safe_fd(map->map_path, KEEP_OPEN);
     line = get_next_line(fd);
-    printf("line is %s\n", line);
+
     while (line)
     {
         if (!ft_strncmp(line, "NO ", 3))
