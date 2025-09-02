@@ -123,7 +123,7 @@ void	ft_clear_all(t_data *data);
 int		click_cross(t_data *data);
 int		esc_key(int keysym, t_data *data);
 void	ft_clear_map(t_map *map, int error_code);
-void	tab_free_null(char **tab);
+void	tab_free_null(char ***tab);
 void	char_free_null(char **s);
 void close_window(t_data *data);
 
@@ -131,7 +131,8 @@ void close_window(t_data *data);
 t_img initialize_image(void *mlx, int width, int height);
 
 // ### CHECKING ###
-bool	is_valid(const char *map_path);
+bool	is_file_valid(const char *map_path);
+bool	check_map(t_map *map);
 bool	extension_is_correct(const char *map_path, size_t len_map);
 int		get_safe_fd(const char *map_path, int flag);
 bool	check_content(const char *map_path);
@@ -163,7 +164,6 @@ void	ft_error_msg(char *msg, int exit_code);
 bool	is_map_square(const char *pathname);
 // bool	map_is_closed_by_walls(const char *pathname);
 bool	only_valid_chars(const char *pathname);
-bool	is_valid(const char *map);
 
 // ### DRAW STRIPES UTILS ###
 void	put_pixel_image(t_img img, int x, int y, int color);

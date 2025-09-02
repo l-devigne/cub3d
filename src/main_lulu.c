@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_lulu.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meruem <meruem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:49:21 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/09/01 22:30:19 by meruem           ###   ########.fr       */
+/*   Updated: 2025/09/02 11:49:54 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 // 	ft_memset(map, 0, sizeof(t_map));// pour init tous les ptrs de la struct a NULL
 // 	if (ac != 2)
 // 		return (ft_error_msg("Wrong number of arguments\n", 1), 1);
-// 	if (!is_valid(av[1]))// goes to global function tester
+// 	if (!is_file_valid(av[1]))// goes to global function tester
 // 		return (ft_error_msg("Error with map file\n", 1), 1);
 // 	/* Entry file is correct - let's do the parsing then verify walls etc */
 // 	fill_map_struct(av[1], map);

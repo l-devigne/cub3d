@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit_clean.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meruem <meruem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:33:27 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/09/01 22:31:01 by meruem           ###   ########.fr       */
+/*   Updated: 2025/09/02 11:48:43 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,21 @@ void	char_free_null(char **s)
 	}
 }
 
-void	tab_free_null(char **tab)
+void	tab_free_null(char ***tab)
 {
 	int	i;
 
 	i = 0;
-	if (!tab)
+	if (!*tab)
 		return ;
-	while (tab && tab[i])
+	while ((*tab)[i])
 	{
-		free(tab[i]);
-		tab[i] = NULL;
+		free((*tab)[i]);
+		(*tab)[i] = NULL;
 		i++;
 	}
-	free(tab);
-	tab = NULL;
+	free(*tab);
+	*tab = NULL;
 }
 
 void	ft_clear_map(t_map *map, int error_code)
@@ -45,7 +45,7 @@ void	ft_clear_map(t_map *map, int error_code)
 	char_free_null(&map->west_texture);
 	char_free_null(&map->east_texture);
 	char_free_null(&map->map_path);
-	tab_free_null(map->grid);
+	tab_free_null(&map->grid);
 	if (error_code == 1)
 		ft_error_msg("Error!\n", 1);
 }
