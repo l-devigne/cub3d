@@ -6,7 +6,7 @@
 /*   By: meruem <meruem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 23:08:36 by meruem            #+#    #+#             */
-/*   Updated: 2025/08/30 23:22:46 by meruem           ###   ########.fr       */
+/*   Updated: 2025/09/02 20:27:25 by meruem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int	detect_key_press(int keysym, t_data *data)
 {
 	if (keysym == 65307)
 		close_window(data);
-	if (keysym == 65361)
+	else if (keysym == 65361)
 		data->keys->key_left = 1;
-	if (keysym == 65363)
+	else if (keysym == 65363)
 		data->keys->key_right = 1;
 	else if (keysym == 119)
 		data->keys->key_w = 1;
@@ -35,7 +35,7 @@ int	detect_key_release(int keysym, t_data *data)
 {
 	if (keysym == 65361)
 		data->keys->key_left = 0;
-	if (keysym == 65363)
+	else if (keysym == 65363)
 		data->keys->key_right = 0;
 	else if (keysym == 119)
 		data->keys->key_w = 0;
@@ -52,15 +52,15 @@ int	handle_keys(t_data *data)
 {
 	if (data->keys->key_left)
 		rotate_left(data);
-	if (data->keys->key_right)
+	else if (data->keys->key_right)
 		rotate_right(data);
-	if (data->keys->key_w)
+	else if (data->keys->key_w)
 		move_forward(data);
-	if (data->keys->key_s)
+	else if (data->keys->key_s)
 		move_backward(data);
-	if (data->keys->key_a)
+	else if (data->keys->key_a)
 		move_left(data);
-	if (data->keys->key_d)
+	else if (data->keys->key_d)
 		move_right(data);
 	draw_whole_screen(data);
 	mlx_put_image_to_window(data->mlx, data->win, data->img.mlx_img, 0, 0);
