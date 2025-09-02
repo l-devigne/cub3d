@@ -22,7 +22,6 @@ NAME = cub3d
 SRC =	src/quit_clean.c \
 		src/parsing_lulu.c \
 		src/file_check.c \
-		src/real_distance.c \
 		src/ray_direction.c \
 		src/dda_algo.c \
 		src/dda_algo_utils.c \
@@ -35,8 +34,7 @@ SRC =	src/quit_clean.c \
 		src/stay_in_map.c \
 		src/utils.c \
 		src/init.c \
-		src/main_lulu.c \
-		src/main_alex.c
+		src/main.c
 
 GREEN = \033[32m
 RED = \033[31m

@@ -14,7 +14,7 @@
 
 t_img	initialize_image(void *mlx, int width, int height)
 {
-	t_img	img;
+	t_img img;
 
 	img.mlx_img = mlx_new_image(mlx, width, height);
 	if (!(img.mlx_img))

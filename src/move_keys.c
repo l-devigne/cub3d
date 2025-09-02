@@ -12,58 +12,58 @@
 
 #include "../include/cub3d.h"
 
-void move_forward(t_data *data)
+void	move_forward(t_data *data)
 {
-    float temp_new_x;
-    float temp_new_y;
+	float	temp_new_x;
+	float	temp_new_y;
 
-    temp_new_x = data->player->x + data->player->dir_x * 0.15;
-    temp_new_y = data->player->y + data->player->dir_y * 0.15;
-    if(!move_to_wall(data, temp_new_x, temp_new_y))
-    {
-        data->player->x = temp_new_x;
-        data->player->y = temp_new_y;
-    }
+	temp_new_x = data->player->x + data->player->dir_x * 0.15;
+	temp_new_y = data->player->y + data->player->dir_y * 0.15;
+	if (!move_to_wall(data, temp_new_x, temp_new_y))
+	{
+		data->player->x = temp_new_x;
+		data->player->y = temp_new_y;
+	}
 }
 
-void move_backward(t_data *data)
+void	move_backward(t_data *data)
 {
-    float temp_new_x;
-    float temp_new_y;
+	float	temp_new_x;
+	float	temp_new_y;
 
-    temp_new_x = data->player->x - data->player->dir_x * 0.15;
-    temp_new_y = data->player->y - data->player->dir_y * 0.15;
-    if(!move_to_wall(data, temp_new_x, temp_new_y))
-    {
-        data->player->x = temp_new_x;
-        data->player->y = temp_new_y;
-    }  
+	temp_new_x = data->player->x - data->player->dir_x * 0.15;
+	temp_new_y = data->player->y - data->player->dir_y * 0.15;
+	if (!move_to_wall(data, temp_new_x, temp_new_y))
+	{
+		data->player->x = temp_new_x;
+		data->player->y = temp_new_y;
+	}
 }
 
-void move_left(t_data *data)
+void	move_left(t_data *data)
 {
-    float temp_new_x;
-    float temp_new_y;
+	float	temp_new_x;
+	float	temp_new_y;
 
-    temp_new_x = data->player->x - (-data->player->dir_y) * 0.15;
-    temp_new_y = data->player->y - data->player->dir_x * 0.15;
-    if(!move_to_wall(data, temp_new_x, temp_new_y))
-    {
-        data->player->x = temp_new_x;
-        data->player->y = temp_new_y;
-    }
+	temp_new_x = data->player->x - (-data->player->dir_y) * 0.15;
+	temp_new_y = data->player->y - data->player->dir_x * 0.15;
+	if (!move_to_wall(data, temp_new_x, temp_new_y))
+	{
+		data->player->x = temp_new_x;
+		data->player->y = temp_new_y;
+	}
 }
 
-void move_right(t_data *data)
+void	move_right(t_data *data)
 {
-    float temp_new_x;
-    float temp_new_y;
+	float temp_new_x;
+	float temp_new_y;
 
-    temp_new_x = data->player->x + (-data->player->dir_y) * 0.15;
-    temp_new_y = data->player->y + data->player->dir_x * 0.15;
-    if(!move_to_wall(data, temp_new_x, temp_new_y))
-    {
-        data->player->x = temp_new_x;
-        data->player->y = temp_new_y;
-    }
+	temp_new_x = data->player->x + (-data->player->dir_y) * 0.15;
+	temp_new_y = data->player->y + data->player->dir_x * 0.15;
+	if (!move_to_wall(data, temp_new_x, temp_new_y))
+	{
+		data->player->x = temp_new_x;
+		data->player->y = temp_new_y;
+	}
 }
