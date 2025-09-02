@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 11:38:04 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/09/02 11:56:34 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/09/02 13:30:54 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,6 +243,36 @@ bool	map_is_closed_by_walls(t_map *map)
 	return (true);
 }
 
+bool	is_player_inside_lab(t_map *map)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while(map->grid[i])
+	{
+		j = 0;
+		while (map->grid[i][j])
+		{
+			if (map->grid[i][j] == 'W' || map->grid[i][j] == 'N'
+			|| map->grid[i][j] == 'S' || map->grid[i][j] == 'E')
+			{
+				if (check_left(map, i, j) == -1)
+					return (false);
+				if (check_right(map, i, j) == -1)
+					return (false);
+				if (check_up(map, i, j) == -1)
+					return (false);
+				if (check_down(map, i, j) == -1)
+					return (false);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (true);
+}
+
 bool	map_get_valid_player(t_map *map)
 {
 	int	player_num;
@@ -266,7 +296,7 @@ bool	map_get_valid_player(t_map *map)
 		i++;
 	}
 	if (player_num == 1)
-		return (true);
+		return (is_player_inside_lab(map));
 	return (false);
 }
 
@@ -295,13 +325,35 @@ bool	map_get_only_valid_chars(t_map *map)
 	return (true);
 }
 
+bool	textures_are_in_valid_format(char *texture)
+{
+	size_t	len_text;
+
+	len_text = ft_strlen(texture);
+	if (texture[len_text - 1] != 'm')
+		return (false);
+	if (texture[len_text - 2] != 'p')
+		return (false);
+	if (texture[len_text - 3] != 'x')
+		return (false);
+	if (texture[len_text - 4] != '.')
+		return (false);
+	return (true);
+}
+
 bool	map_get_valid_textures(t_map *map)
 {
-	if (!map->north_texture || !map->south_texture || !map->west_texture
-		|| !map->east_texture)
+	if (!map->north_texture || !map->south_texture ||
+    	!map->west_texture  || !map->east_texture)
 		return (false);
-	if (access(map->north_texture, R_OK) == -1 || access(map->south_texture,
-			R_OK) == -1 || access(map->west_texture, R_OK) == -1
+	if (!textures_are_in_valid_format(map->north_texture)
+		|| !textures_are_in_valid_format(map->south_texture)
+		|| !textures_are_in_valid_format(map->east_texture)
+		|| !textures_are_in_valid_format(map->west_texture))
+		return (false);
+	if (access(map->north_texture, R_OK) == -1
+		|| access(map->south_texture, R_OK) == -1
+		|| access(map->west_texture, R_OK) == -1
 		|| access(map->east_texture, R_OK) == -1)
 		return (false);
 	return (true);
@@ -310,12 +362,12 @@ bool	map_get_valid_textures(t_map *map)
 bool	check_map(t_map *map)
 {
 	if (!map_get_valid_textures(map))
-		return (false);
+		return (printf("Error\n[invalid textures]\n"), false);
 	if (!map_is_closed_by_walls(map))
-		return (false);
+		return (printf("Error\n[invalid walls]\n"), false);
 	if (!map_get_valid_player(map))
-		return (false);
+		return (printf("Error\n[invalid player]\n"), false);
 	if (!map_get_only_valid_chars(map))
-		return (false);
+		return (printf("Error\n[invalid items]\n"), false);
 	return (true);
 }

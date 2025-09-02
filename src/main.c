@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_alex.c                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:46:07 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/09/02 11:48:05 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/09/02 13:31:13 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int	main(int ac, char **av)
 	fill_map_struct(av[1], &map); // load the map with the file
 	/* map is loaded -> need to check content of it */
 	if (!check_map(&map))
-		return (ft_clear_map(&map, 1), 1);
+		return (ft_clear_map(&map, 0), 1);
 	/* END OF PARSING */
 	init_player(map.grid, &player);
 	// print_map(map);
