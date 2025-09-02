@@ -20,8 +20,6 @@ MLX_LIBS = -L$(MLX_DIR) -lmlx -lX11 -lXext -lm
 NAME = cub3d
 
 SRC =	src/quit_clean.c \
-		src/parsing_lulu.c \
-		src/file_check.c \
 		src/ray_direction.c \
 		src/dda_algo.c \
 		src/dda_algo_utils.c \
@@ -36,6 +34,27 @@ SRC =	src/quit_clean.c \
 		src/init.c \
 		src/init_player_dir.c \
 		src/close_window.c \
+		src/check_map.c \
+		src/map_get_valid_textures.c \
+		src/textures_are_in_valid_format.c \
+		src/map_get_only_valid_chars.c \
+		src/map_get_valid_player.c \
+		src/is_player_inside_lab.c \
+		src/map_is_closed_by_walls.c \
+		src/check_direction.c \
+		src/process_line_check.c \
+		src/no_walls_alone.c \
+		src/get_safe_fd.c \
+		src/extension_is_correct.c \
+		src/is_file_valid.c \
+		src/display_map.c \
+		src/fill_map_struct.c \
+		src/get_lines_num_to_skip.c \
+		src/get_textures.c \
+		src/get_str_without_eol.c \
+		src/get_color_from_string.c \
+		src/fill_grid.c \
+		src/get_x_and_y.c \
 		src/main.c
 
 GREEN = \033[32m

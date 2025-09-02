@@ -137,15 +137,22 @@ void	init_data_null(t_data *data);
 
 
 // ### CHECKING ###
-bool			is_file_valid(const char *map_path);
 bool			check_map(t_map *map);
+int				check_left(t_map *map, int i, int j);
+int				check_right(t_map *map, int i, int j);
+int				check_up(t_map *map, int i, int j);
+int				check_down(t_map *map, int i, int j);
 bool			extension_is_correct(const char *map_path, size_t len_map);
 int				get_safe_fd(const char *map_path, int flag);
-bool			check_content(const char *map_path);
+bool			is_file_valid(const char *map_path);
+bool			is_player_inside_lab(t_map *map);
+bool			map_get_only_valid_chars(t_map *map);
+bool			map_get_valid_player(t_map *map);
+bool			map_get_valid_textures(t_map *map);
+bool			map_is_closed_by_walls(t_map *map);
 bool			no_walls_alone(const char *map_path);
 bool			process_line_check(const char *line);
-bool			is_line_full_wall(char *line);
-bool			map_is_closed_by_walls(t_map *map);
+bool			textures_are_in_valid_format(char *texture);
 
 // ### PARSING ###
 int				get_lines_num_to_skip(const char *map_path);
@@ -154,12 +161,11 @@ int				get_y_len(const char *map_path);
 void			skip_lines(int fd, char *line, int nb_to_skip);
 void			fill_single_line(t_map *map, char *line, int y);
 void			fill_grid(t_map *map);
-int				ft_strtol(char *str);
 int				set_color_limit(int val);
 int				get_color_from_string(char *str);
-void			get_textures(t_map *map);
-void			fill_map_struct(const char *map_path, t_map *map);
-void			display_map(t_map *map);
+void			get_textures(t_data *data, t_map *map);
+void			fill_map_struct(t_data *data, const char *map_path, t_map *map);
+char			*get_str_without_eol(char *s, t_data *data);
 
 // ### TERM DISPLAY ###
 void			display_grid(char **grid);
