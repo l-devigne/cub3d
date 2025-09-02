@@ -70,7 +70,7 @@ void	init_ray(t_ray *ray, t_data *data, float cam_step)
 {
 	ray->ray_dir = ray_direction(data->player, cam_step);
 	if (!ray->ray_dir)
-		return (ft_clear_all(data), exit(1));
+		return (ft_clear_all(data, 0), exit(1));
 	ray->ray_origin.x = data->player->x;
 	ray->ray_origin.y = data->player->y;
 	ray->ray_map_origin_x = (int)ray->ray_origin.x;

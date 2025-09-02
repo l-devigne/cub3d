@@ -12,20 +12,6 @@
 
 #include "../include/cub3d.h"
 
-void	init_test(t_map *test)
-{
-	char	*grid_linear;
-
-	grid_linear = "111111\n100101\n101001\n1100S1\n111111";
-	test->grid = ft_split(grid_linear, '\n');
-	test->ceiling_color = 0xFFFFFF;
-	test->floor_color = 0x000000FF;
-	test->south_texture = "textures/SO.xpm";
-	test->north_texture = "textures/NO.xpm";
-	test->west_texture = "textures/WE.xpm";
-	test->east_texture = "textures/EA.xpm";
-}
-
 void	init_player(char **grid, t_player *player)
 {
 	int	i;
@@ -111,6 +97,14 @@ void	init_keys(t_data *data, t_keys *keys)
 	data->keys = keys;
 }
 
+void	init_data_null(t_data *data)
+{
+	data->mlx = NULL;
+	data->win = NULL;
+	data->map = NULL;
+	data->text = NULL;
+}
+
 int	main(int ac, char **av)
 {
 	t_data		data;
@@ -121,6 +115,7 @@ int	main(int ac, char **av)
 
 	if (ac != 2)
 		return (ft_error_msg("Wrong number of arguments\n", 1), 1);
+	init_data_null(&data);
 	texture.tex_img = NULL;
 	ft_memset(&map, 0, sizeof(map));
 	// very important to set all data to null pointers before loading them
@@ -134,15 +129,15 @@ int	main(int ac, char **av)
 	if (!data.win)
 		return (mlx_destroy_display(data.mlx), free(data.mlx), 1);
 	data.img = initialize_image(data.mlx, 1500, 800);
+	data.map = &map;
 	fill_map_struct(av[1], &map); // load the map with the file
 	/* map is loaded -> need to check content of it */
 	if (!check_map(&map))
-		return (ft_clear_map(&map, 0), 1);
+		return (ft_clear_all(&data, 0), 1);
 	/* END OF PARSING */
 	init_player(map.grid, &player);
 	// print_map(map);
 	data.player = &player;
-	data.map = &map;
 	data.text = &texture;
 	init_keys(&data, &keys);
 	data.screen_height = 800;

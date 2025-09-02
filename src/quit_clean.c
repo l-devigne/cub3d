@@ -40,35 +40,41 @@ void	tab_free_null(char ***tab)
 
 void	ft_clear_map(t_map *map, int error_code)
 {
-	char_free_null(&map->north_texture);
-	char_free_null(&map->south_texture);
-	char_free_null(&map->west_texture);
-	char_free_null(&map->east_texture);
-	char_free_null(&map->map_path);
+	if (map->north_texture)
+		char_free_null(&map->north_texture);
+	if (map->south_texture)
+		char_free_null(&map->south_texture);
+	if (map->west_texture)
+		char_free_null(&map->west_texture);
+	if (map->east_texture)
+		char_free_null(&map->east_texture);
+	if (map->map_path)
+		char_free_null(&map->map_path);
 	tab_free_null(&map->grid);
 	if (error_code == 1)
 		ft_error_msg("Error!\n", 1);
 }
 
-void	ft_clear_all(t_data *data)
+void	ft_clear_all(t_data *data, int error_code)
 {
 	mlx_destroy_image(data->mlx, data->img.mlx_img);
-	if (data->text->tex_img)
+	if (data->text && data->text->tex_img)
 		mlx_destroy_image(data->mlx, data->text->tex_img);
 	mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
-	ft_clear_map(data->map, 0);
+	if (data->map)
+		ft_clear_map(data->map, error_code);
 }
 
 int	click_cross(t_data *data)
 {
-	ft_clear_all(data);
+	ft_clear_all(data, 0);
 	exit(0);
 	return (0);
 }
 void	close_window(t_data *data)
 {
-	ft_clear_all(data);
+	ft_clear_all(data, 0);
 	exit(0);
 }
