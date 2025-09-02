@@ -47,7 +47,6 @@ int	get_y_len(const char *map_path)
 	char	*line;
 	int		fd;
 	int		y;
-	
 
 	y = 0;
 	fd = get_safe_fd(map_path, KEEP_OPEN);
@@ -69,41 +68,34 @@ int	**convert_file_to_map(const char *map)
 {
 	int		**tab;
 	int		*data;
-	int		x, y;
-	int		x_len, y_len;
 	int		fd;
 	char	*line;
 
+	int		x, y;
+	int		x_len, y_len;
 	fd = open(map, O_RDONLY);
 	if (fd < 0)
 		ft_error_msg("Unable to open map file\n", 1);
-
 	x_len = get_x_len(map);
 	y_len = get_y_len(map);
-
 	tab = malloc(sizeof(int*) * y_len);
 	if (!tab)
 		ft_error_msg("Memory allocation failed (tab)\n", 1);
-
 	data = malloc(sizeof(int) * x_len * y_len);
 	if (!data)
 	{
 		free(tab);
 		ft_error_msg("Memory allocation failed (data)\n", 1);
 	}
-
 	for (int i = 0; i < y_len; i++)
 		tab[i] = data + (i * x_len);  // setup lignes
-
 	for (y = 0; y < y_len; y++)
 	{
 		line = get_next_line(fd);
 		if (!line)
 			ft_error_msg("Unexpected end of file\n", 1);
-
 		for (x = 0; x < x_len && line[x] != '\n' && line[x] != '\0'; x++)
 			tab[y][x] = line[x];  // convert '1' → 1, etc.
-
 		free(line);
 	}
 	return (close(fd), tab);
@@ -145,7 +137,6 @@ void	fill_single_line(t_map *map, char *line, int y)
 {
 	int	x;
 
-
 	map->grid[y] = malloc(sizeof(char) * (map->x_len + 1)); // +1 pour \0
 	if (!map->grid[y])
 		ft_clear_map(map, 1);
@@ -167,7 +158,6 @@ void	fill_grid(t_map *map)
 	fd = get_safe_fd(map->map_path, KEEP_OPEN);
 	line = NULL;
 	map->grid = NULL;
-
 	map->grid = malloc(sizeof(char *) * (map->y_len + 1));
 	if (!(map->grid))
 		ft_clear_map(map, 1);
@@ -177,12 +167,12 @@ void	fill_grid(t_map *map)
 	{
 		line = get_next_line(fd);
 		if (!line)
-			break;
+			break ;
 		fill_single_line(map, line, y);
 		free(line);
 		y++;
 	}
-	map->grid[y] = '\0';
+	map->grid[y] = NULL;
 	close(fd);
 }
 
@@ -197,7 +187,7 @@ int	set_color_limit(int val)
 
 int	get_color_from_string(char *str)
 {
-	int 	r;
+	int		r;
 	int		g;
 	int		b;
 	char	*ptr;
@@ -220,63 +210,62 @@ int	get_color_from_string(char *str)
 	return ((r << 16) | (g << 8) | b);
 }
 
-char    *get_str_without_eol(char *s)
+char	*get_str_without_eol(char *s)
 {
-    int        size_to_dup;
-    char    *copy;
-    int        i;
+	int		size_to_dup;
+	char	*copy;
+	int		i;
 
-    if (!s)
-        return (NULL);
-    size_to_dup = 0;
-    while (s[size_to_dup] && s[size_to_dup] != '\n')
-        size_to_dup++;
-    copy = malloc(sizeof(char) * (size_to_dup + 1));
-    if (!copy)
-        return (NULL);
-    i = 0;
-    while (i < size_to_dup)
-    {
-        copy[i] = s[i];
-        i++;
-    }
-    copy[i] = '\0';
-    return (copy);
+	if (!s)
+		return (NULL);
+	size_to_dup = 0;
+	while (s[size_to_dup] && s[size_to_dup] != '\n')
+		size_to_dup++;
+	copy = malloc(sizeof(char) * (size_to_dup + 1));
+	if (!copy)
+		return (NULL);
+	i = 0;
+	while (i < size_to_dup)
+	{
+		copy[i] = s[i];
+		i++;
+	}
+	copy[i] = '\0';
+	return (copy);
 }
 
-void    get_textures(t_map *map)
+void	get_textures(t_map *map)
 {
-    int        fd;
-    char    *line;
+	int		fd;
+	char	*line;
 
-    fd = get_safe_fd(map->map_path, KEEP_OPEN);
-    line = get_next_line(fd);
-
-    while (line)
-    {
-        if (!ft_strncmp(line, "NO ", 3))
-            map->north_texture = get_str_without_eol(line + 3);
-        else if (!ft_strncmp(line, "SO ", 3))
-            map->south_texture = get_str_without_eol(line + 3);
-        else if (!ft_strncmp(line, "WE ", 3))
-            map->west_texture = get_str_without_eol(line + 3);
-        else if (!ft_strncmp(line, "EA ", 3))
-            map->east_texture = get_str_without_eol(line + 3);
-        else if (!ft_strncmp(line, "F ", 1))
-            map->floor_color = get_color_from_string(line + 2);
-        else if (!ft_strncmp(line, "C ", 1))
-            map->ceiling_color = get_color_from_string(line + 2);
-        free(line);
-        line = get_next_line(fd);
-    }
-    close (fd);
+	fd = get_safe_fd(map->map_path, KEEP_OPEN);
+	line = get_next_line(fd);
+	while (line)
+	{
+		if (!ft_strncmp(line, "NO ", 3))
+			map->north_texture = get_str_without_eol(line + 3);
+		else if (!ft_strncmp(line, "SO ", 3))
+			map->south_texture = get_str_without_eol(line + 3);
+		else if (!ft_strncmp(line, "WE ", 3))
+			map->west_texture = get_str_without_eol(line + 3);
+		else if (!ft_strncmp(line, "EA ", 3))
+			map->east_texture = get_str_without_eol(line + 3);
+		else if (!ft_strncmp(line, "F ", 1))
+			map->floor_color = get_color_from_string(line + 2);
+		else if (!ft_strncmp(line, "C ", 1))
+			map->ceiling_color = get_color_from_string(line + 2);
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
 }
 
-int		get_lines_num_to_skip(const char *map_path)
+int	get_lines_num_to_skip(const char *map_path)
 {
-	int			fd;
-	char		*line;
-	int			line_count;
+	int		fd;
+	char	*line;
+	int		line_count;
 
 	line_count = 0;
 	fd = get_safe_fd(map_path, KEEP_OPEN);
@@ -291,16 +280,16 @@ int		get_lines_num_to_skip(const char *map_path)
 			line_count++;
 		}
 		else if (!ft_strcmp(line, "\n") || !ft_strncmp(line, "F ", 2)
-				|| !ft_strncmp(line, "C ", 2))
+			|| !ft_strncmp(line, "C ", 2))
 		{
 			free(line);
 			line = get_next_line(fd);
 			line_count++;
 		}
 		else
-			break;
+			break ;
 	}
-	while(line)
+	while (line)
 	{
 		free(line);
 		line = get_next_line(fd);

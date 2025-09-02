@@ -14,7 +14,7 @@
 
 bool	is_file_valid(const char *map_path)
 {
-	size_t		len_map;
+	size_t	len_map;
 
 	len_map = ft_strlen(map_path);
 	if (!map_path)
@@ -65,7 +65,7 @@ bool	no_walls_alone(const char *map_path)
 	while (line)
 	{
 		if (line[0] == '0' || line[0] == '1')
-			break;
+			break ;
 		free(line);
 		line = get_next_line(fd);
 	}
@@ -95,10 +95,10 @@ bool	process_line_check(const char *line)
 		else if (*line == '\n')
 		{
 			i++;
-			break;
+			break ;
 		}
 		else
-			break;
+			break ;
 		i++;
 	}
 	if (i == len_line)
@@ -115,11 +115,11 @@ bool	is_line_full_wall(char *line)
 	return (true);
 }
 
-/* map->grid has been parsed, we need to do 2 steps 
-1 - transform SPACE char to '1' (walls) 
+/* map->grid has been parsed, we need to do 2 steps
+1 - transform SPACE char to '1' (walls)
 2 - check if map is closed by walls */
 
-int		check_left(t_map *map, int i, int j)
+int	check_left(t_map *map, int i, int j)
 {
 	bool	left;
 	int		tmp;
@@ -131,7 +131,7 @@ int		check_left(t_map *map, int i, int j)
 		if (map->grid[i][j] == '1')
 		{
 			left = true;
-			break;
+			break ;
 		}
 		else
 			j--;
@@ -141,9 +141,8 @@ int		check_left(t_map *map, int i, int j)
 	if (left == false)
 		return (-1);
 	return (tmp);
-
 }
-int		check_right(t_map *map, int i, int j)
+int	check_right(t_map *map, int i, int j)
 {
 	bool	right;
 	int		tmp;
@@ -155,11 +154,11 @@ int		check_right(t_map *map, int i, int j)
 		if (map->grid[i][j] == '1')
 		{
 			right = true;
-			break;
+			break ;
 		}
 		else
 			j++;
-		if (j > (int) ft_strlen(map->grid[i]))
+		if (j > (int)ft_strlen(map->grid[i]))
 			return (-1);
 	}
 	if (right == false)
@@ -167,7 +166,7 @@ int		check_right(t_map *map, int i, int j)
 	return (tmp);
 }
 
-int		check_up(t_map *map, int i, int j)
+int	check_up(t_map *map, int i, int j)
 {
 	bool	up;
 	int		tmp;
@@ -179,7 +178,7 @@ int		check_up(t_map *map, int i, int j)
 		if (map->grid[i][j] == '1')
 		{
 			up = true;
-			break;
+			break ;
 		}
 		else
 			i--;
@@ -191,7 +190,7 @@ int		check_up(t_map *map, int i, int j)
 	return (tmp);
 }
 
-int		check_down(t_map *map, int i, int j)
+int	check_down(t_map *map, int i, int j)
 {
 	bool	down;
 	int		tmp;
@@ -203,7 +202,7 @@ int		check_down(t_map *map, int i, int j)
 		if (map->grid[i][j] == '1')
 		{
 			down = true;
-			break;
+			break ;
 		}
 		else
 			i++;
@@ -246,21 +245,21 @@ bool	map_is_closed_by_walls(t_map *map)
 
 bool	map_get_valid_player(t_map *map)
 {
-	int		player_num;
-	int		i;
-	int		j;
+	int	player_num;
+	int	i;
+	int	j;
 
 	if (!map || !map->grid)
 		return (false);
 	player_num = 0;
 	i = 0;
-	while(map->grid[i])
+	while (map->grid[i])
 	{
 		j = 0;
 		while (map->grid[i][j])
 		{
 			if (map->grid[i][j] == 'W' || map->grid[i][j] == 'N'
-			|| map->grid[i][j] == 'S' || map->grid[i][j] == 'E')
+				|| map->grid[i][j] == 'S' || map->grid[i][j] == 'E')
 				player_num++;
 			j++;
 		}
@@ -273,21 +272,21 @@ bool	map_get_valid_player(t_map *map)
 
 bool	map_get_only_valid_chars(t_map *map)
 {
-	int		i;
-	int		j;
+	int	i;
+	int	j;
 
 	i = 0;
 	if (!map || !map->grid)
 		return (false);
-	while(map->grid[i])
+	while (map->grid[i])
 	{
 		j = 0;
 		while (map->grid[i][j])
 		{
 			if (!(map->grid[i][j] == 'W' || map->grid[i][j] == 'N'
-			|| map->grid[i][j] == 'S' || map->grid[i][j] == 'E'
-			|| map->grid[i][j] == ' ' || map->grid[i][j] == '\n'
-			|| map->grid[i][j] == '0' || map->grid[i][j] == '1'))
+					|| map->grid[i][j] == 'S' || map->grid[i][j] == 'E'
+					|| map->grid[i][j] == ' ' || map->grid[i][j] == '\n'
+					|| map->grid[i][j] == '0' || map->grid[i][j] == '1'))
 				return (false);
 			j++;
 		}
@@ -298,17 +297,15 @@ bool	map_get_only_valid_chars(t_map *map)
 
 bool	map_get_valid_textures(t_map *map)
 {
-	if (!map->north_texture || !map->south_texture ||
-    	!map->west_texture  || !map->east_texture)
+	if (!map->north_texture || !map->south_texture || !map->west_texture
+		|| !map->east_texture)
 		return (false);
-	if (access(map->north_texture, R_OK) == -1
-		|| access(map->south_texture, R_OK) == -1
-		|| access(map->west_texture, R_OK) == -1
+	if (access(map->north_texture, R_OK) == -1 || access(map->south_texture,
+			R_OK) == -1 || access(map->west_texture, R_OK) == -1
 		|| access(map->east_texture, R_OK) == -1)
 		return (false);
 	return (true);
 }
-
 
 bool	check_map(t_map *map)
 {

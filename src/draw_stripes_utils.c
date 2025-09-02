@@ -12,29 +12,31 @@
 
 #include "../include/cub3d.h"
 
-int screen_wall_height(t_data *data, float perpWallDist)
+int	screen_wall_height(t_data *data, float perpWallDist)
 {
-    return ((int)(data->screen_height / perpWallDist));
+	return ((int)(data->screen_height / perpWallDist));
 }
 
-int draw_start_wall(t_data *data, float perpWallDist)
+int	draw_start_wall(t_data *data, float perpWallDist)
 {
-    int drawStart;
+	int	drawStart;
 
-    drawStart = -screen_wall_height(data, perpWallDist) / 2 + data->screen_height / 2;
-    if (drawStart < 0) 
-        drawStart = 0;
-    return (drawStart);
+	drawStart = -screen_wall_height(data, perpWallDist) / 2
+		+ data->screen_height / 2;
+	if (drawStart < 0)
+		drawStart = 0;
+	return (drawStart);
 }
 
-int draw_end_wall(t_data *data, float perpWallDist)
+int	draw_end_wall(t_data *data, float perpWallDist)
 {
-    int drawEnd;
+	int	drawEnd;
 
-    drawEnd = screen_wall_height(data, perpWallDist) / 2 + data->screen_height / 2;
-    if (drawEnd < 0)
-        drawEnd = 0;
-    return (drawEnd);
+	drawEnd = screen_wall_height(data, perpWallDist) / 2 + data->screen_height
+		/ 2;
+	if (drawEnd < 0)
+		drawEnd = 0;
+	return (drawEnd);
 }
 
 void	put_pixel_image(t_img img, int x, int y, int color)
@@ -45,4 +47,3 @@ void	put_pixel_image(t_img img, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 // add textures later
-

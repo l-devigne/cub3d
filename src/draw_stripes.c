@@ -12,44 +12,51 @@
 
 #include "../include/cub3d.h"
 
-void draw_stripe(t_data *data, float cam_step, int index)
+void	draw_stripe(t_data *data, float cam_step, int index)
 {
-    int i;
-    float perpWallDist = ray_dda_algo(data, cam_step);
-    int start = draw_start_wall(data, perpWallDist);
-    int end = draw_end_wall(data, perpWallDist);
+	int		i;
+	float	perpWallDist;
+	int		start;
+	int		end;
+	int		lineHeight;
+	int		d;
+	int		texY;
+	char	*pixel;
+	int		color;
 
-    i = 0;
-    while(i < data->screen_height)
-    {
-        if (i < start)
-            put_pixel_image(data->img, index, i, data->map->ceiling_color);
-        else if (i >= start && i <= end)
-        {
-            int lineHeight = end - start;
-            int d = (i * 256 - data->screen_height * 128 + lineHeight * 128);
-            int texY = ((d * data->text->height) / lineHeight) / 256;
-
-            char *pixel = data->text->tex_addr + (texY * data->text->line_len + data->text->texX * (data->text->bpp / 8));
-            int color = *(unsigned int*)pixel;
-
-            put_pixel_image(data->img, index, i, color);
-            // put_pixel_image(data->img, index, i, data->map->wall_color);
-        }
-        else
-            put_pixel_image(data->img, index, i, data->map->floor_color);
-        ++i;
-    }
+	perpWallDist = ray_dda_algo(data, cam_step);
+	start = draw_start_wall(data, perpWallDist);
+	end = draw_end_wall(data, perpWallDist);
+	i = 0;
+	while (i < data->screen_height)
+	{
+		if (i < start)
+			put_pixel_image(data->img, index, i, data->map->ceiling_color);
+		else if (i >= start && i <= end)
+		{
+			lineHeight = end - start;
+			d = (i * 256 - data->screen_height * 128 + lineHeight * 128);
+			texY = ((d * data->text->height) / lineHeight) / 256;
+			pixel = data->text->tex_addr + (texY * data->text->line_len
+					+ data->text->texX * (data->text->bpp / 8));
+			color = *(unsigned int *)pixel;
+			put_pixel_image(data->img, index, i, color);
+			// put_pixel_image(data->img, index, i, data->map->wall_color);
+		}
+		else
+			put_pixel_image(data->img, index, i, data->map->floor_color);
+		++i;
+	}
 }
 
-void draw_whole_screen(t_data *data)
+void	draw_whole_screen(t_data *data)
 {
-    int i;
+	int i;
 
-    i = 0;
-    while(i < data->screen_width)
-    {
-        draw_stripe(data, cameraX_choice(data->screen_width, i), i);
-        ++i;
-    }
+	i = 0;
+	while (i < data->screen_width)
+	{
+		draw_stripe(data, cameraX_choice(data->screen_width, i), i);
+		++i;
+	}
 }
