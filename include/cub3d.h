@@ -69,6 +69,7 @@ typedef struct s_ray
 	t_coord		dist_next_cel;
 	t_coord		step_map;
 	t_coord		side_dist;
+	int type_side;
 }				t_ray;
 // typedef struct s_ray
 // {
@@ -129,6 +130,11 @@ void			close_window(t_data *data);
 
 // ### INIT ###
 t_img			initialize_image(void *mlx, int width, int height);
+void	init_player(t_data *data, char **grid, t_player *player);
+void	init_keys(t_data *data, t_keys *keys);
+void	init_data_null(t_data *data);
+
+
 
 // ### CHECKING ###
 bool			is_file_valid(const char *map_path);
@@ -170,9 +176,8 @@ void			put_pixel_image(t_img img, int x, int y, int color);
 int				draw_end_wall(t_data *data, float perpWallDist);
 int				draw_start_wall(t_data *data, float perpWallDist);
 int				screen_wall_height(t_data *data, float perpWallDist);
-void			choose_wall_textures(int side, t_data *data, t_coord *ray_dir);
-void			texture_handling(t_data *data, char *texture_path, int side,
-					t_ray ray, float perpWallDist);
+void			choose_wall_textures(t_data *data, t_ray ray);
+void			texture_handling(t_data *data, t_ray ray, float perpWallDist);
 
 // ### DRAW STRIPES ###
 void			draw_stripe(t_data *data, float cam_step, int index);
@@ -186,7 +191,7 @@ void			init_ray(t_ray *ray, t_data *data, float cam_step);
 int				which_side_hit(t_data *data, t_ray *ray);
 
 // ### RAY DIRECTION ###
-float			cameraX_choice(int screen_width, float camrange_index);
+float			camera_choice(int screen_width, float camrange_index);
 t_coord			*ray_direction(t_player *player, float cameraX);
 
 // ### MOVE KEYS ###
@@ -206,5 +211,12 @@ int				detect_key_press(int keysym, t_data *data);
 
 // ### STAY IN MAP ###
 bool			move_to_wall(t_data *data, float new_x, float new_y);
+
+// ### INIT PLAYER DIR ###
+char find_player_in_grid(t_player *player, char **grid);
+void player_look_north(t_player *player);
+void player_look_south(t_player *player);
+void player_look_west(t_player *player);
+void player_look_east(t_player *player);
 
 #endif

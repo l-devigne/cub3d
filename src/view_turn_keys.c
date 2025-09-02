@@ -19,12 +19,10 @@ void	rotate_left(t_data *data)
 
 	old_dir_x = data->player->dir_x;
 	old_plane_x = data->player->plane_x;
-	// rotate direction
 	data->player->dir_x = data->player->dir_x * cos(-0.15) - data->player->dir_y
 		* sin(-0.15);
 	data->player->dir_y = old_dir_x * sin(-0.15) + data->player->dir_y
 		* cos(-0.15);
-	// rotate camera plane as well
 	data->player->plane_x = data->player->plane_x * cos(-0.15)
 		- data->player->plane_y * sin(-0.15);
 	data->player->plane_y = old_plane_x * sin(-0.15) + data->player->plane_y
@@ -38,12 +36,10 @@ void	rotate_right(t_data *data)
 
 	old_dir_x = data->player->dir_x;
 	old_plane_x = data->player->plane_x;
-	// rotate direction
 	data->player->dir_x = data->player->dir_x * cos(0.15) - data->player->dir_y
 		* sin(0.15);
 	data->player->dir_y = old_dir_x * sin(0.15) + data->player->dir_y
 		* cos(0.15);
-	// rotate camera plane as well
 	data->player->plane_x = data->player->plane_x * cos(0.15)
 		- data->player->plane_y * sin(0.15);
 	data->player->plane_y = old_plane_x * sin(0.15) + data->player->plane_y

@@ -15,20 +15,20 @@
 float	ray_dda_algo(t_data *data, float cam_step)
 {
 	t_ray	ray_info;
-	int		side;
-	float	perpWallDist;
+	float	perp_wall_dist;
 
 	init_ray(&ray_info, data, cam_step);
-	side = which_side_hit(data, &ray_info);
-	if (side == 0)
-		perpWallDist = ((float)ray_info.ray_map_origin_x - ray_info.ray_origin.x
-				+ (1 - ray_info.step_map.x) / 2) / ray_info.ray_dir->x;
+	ray_info.type_side = which_side_hit(data, &ray_info);
+	if (ray_info.type_side == 0)
+		perp_wall_dist = ((float)ray_info.ray_map_origin_x
+				- ray_info.ray_origin.x + (1 - ray_info.step_map.x) / 2)
+			/ ray_info.ray_dir->x;
 	else
-		perpWallDist = ((float)ray_info.ray_map_origin_y - ray_info.ray_origin.y
-				+ (1 - ray_info.step_map.y) / 2) / ray_info.ray_dir->y;
-	choose_wall_textures(side, data, ray_info.ray_dir);
-	texture_handling(data, data->map->wall_path_choice, side, ray_info,
-		perpWallDist);
+		perp_wall_dist = ((float)ray_info.ray_map_origin_y
+				- ray_info.ray_origin.y + (1 - ray_info.step_map.y) / 2)
+			/ ray_info.ray_dir->y;
+	choose_wall_textures(data, ray_info);
+	texture_handling(data, ray_info, perp_wall_dist);
 	free(ray_info.ray_dir);
-	return (perpWallDist);
+	return (perp_wall_dist);
 }

@@ -12,21 +12,32 @@
 
 #include "../include/cub3d.h"
 
-void	draw_stripe(t_data *data, float cam_step, int index)
+void	draw_pixel_texture(t_data *data, int line_height, int index, int i)
 {
-	int		i;
-	float	perpWallDist;
-	int		start;
-	int		end;
-	int		lineHeight;
 	int		d;
-	int		texY;
+	int		tex_y;
 	char	*pixel;
 	int		color;
 
-	perpWallDist = ray_dda_algo(data, cam_step);
-	start = draw_start_wall(data, perpWallDist);
-	end = draw_end_wall(data, perpWallDist);
+	d = (i * 256 - data->screen_height * 128 + line_height * 128);
+	tex_y = ((d * data->text->height) / line_height) / 256;
+	pixel = data->text->tex_addr + (tex_y * data->text->line_len
+			+ data->text->texX * (data->text->bpp / 8));
+	color = *(unsigned int *)pixel;
+	put_pixel_image(data->img, index, i, color);
+}
+
+void	draw_stripe(t_data *data, float cam_step, int index)
+{
+	int		i;
+	float	perp_wall_dist;
+	int		start;
+	int		end;
+	int		line_height;
+
+	perp_wall_dist = ray_dda_algo(data, cam_step);
+	start = draw_start_wall(data, perp_wall_dist);
+	end = draw_end_wall(data, perp_wall_dist);
 	i = 0;
 	while (i < data->screen_height)
 	{
@@ -34,14 +45,8 @@ void	draw_stripe(t_data *data, float cam_step, int index)
 			put_pixel_image(data->img, index, i, data->map->ceiling_color);
 		else if (i >= start && i <= end)
 		{
-			lineHeight = end - start;
-			d = (i * 256 - data->screen_height * 128 + lineHeight * 128);
-			texY = ((d * data->text->height) / lineHeight) / 256;
-			pixel = data->text->tex_addr + (texY * data->text->line_len
-					+ data->text->texX * (data->text->bpp / 8));
-			color = *(unsigned int *)pixel;
-			put_pixel_image(data->img, index, i, color);
-			// put_pixel_image(data->img, index, i, data->map->wall_color);
+			line_height = end - start;
+			draw_pixel_texture(data, line_height, index, i);
 		}
 		else
 			put_pixel_image(data->img, index, i, data->map->floor_color);
@@ -51,12 +56,13 @@ void	draw_stripe(t_data *data, float cam_step, int index)
 
 void	draw_whole_screen(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < data->screen_width)
 	{
-		draw_stripe(data, cameraX_choice(data->screen_width, i), i);
+		draw_stripe(data, camera_choice(data->screen_width, i), i);
 		++i;
 	}
+	mlx_put_image_to_window(data->mlx, data->win, data->img.mlx_img, 0, 0);
 }

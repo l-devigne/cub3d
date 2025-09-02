@@ -14,55 +14,55 @@
 
 int	detect_key_press(int keysym, t_data *data)
 {
-	if (keysym == 65307) // Escape
+	if (keysym == 65307)
 		close_window(data);
-	if (keysym == 65361) // left arrow
+	if (keysym == 65361)
 		data->keys->key_left = 1;
-	if (keysym == 65363) // right arrow
+	if (keysym == 65363)
 		data->keys->key_right = 1;
-	else if (keysym == 119) // W
+	else if (keysym == 119)
 		data->keys->key_w = 1;
-	else if (keysym == 115) // S
+	else if (keysym == 115)
 		data->keys->key_s = 1;
-	else if (keysym == 97) // A
+	else if (keysym == 97)
 		data->keys->key_a = 1;
-	else if (keysym == 100) // D
+	else if (keysym == 100)
 		data->keys->key_d = 1;
 	return (0);
 }
 
 int	detect_key_release(int keysym, t_data *data)
 {
-	if (keysym == 65361) // left arrow
+	if (keysym == 65361)
 		data->keys->key_left = 0;
-	if (keysym == 65363) // right arrow
+	if (keysym == 65363)
 		data->keys->key_right = 0;
-	else if (keysym == 119) // W
+	else if (keysym == 119)
 		data->keys->key_w = 0;
-	else if (keysym == 115) // S
+	else if (keysym == 115)
 		data->keys->key_s = 0;
-	else if (keysym == 97) // A
+	else if (keysym == 97)
 		data->keys->key_a = 0;
-	else if (keysym == 100) // D
+	else if (keysym == 100)
 		data->keys->key_d = 0;
 	return (0);
 }
 
 int	handle_keys(t_data *data)
 {
-	if (data->keys->key_left) // left arrow
+	if (data->keys->key_left)
 		rotate_left(data);
-	if (data->keys->key_right) // right arrow
+	if (data->keys->key_right)
 		rotate_right(data);
-	if (data->keys->key_w) // W
+	if (data->keys->key_w)
 		move_forward(data);
-	if (data->keys->key_s) // S
+	if (data->keys->key_s)
 		move_backward(data);
-	if (data->keys->key_a) // A
+	if (data->keys->key_a)
 		move_left(data);
-	if (data->keys->key_d) // D
+	if (data->keys->key_d)
 		move_right(data);
 	draw_whole_screen(data);
-	mlx_put_image_to_window(data->mlx, data->win, data->img.mlx_img, 50, 50);
+	mlx_put_image_to_window(data->mlx, data->win, data->img.mlx_img, 0, 0);
 	return (0);
 }
