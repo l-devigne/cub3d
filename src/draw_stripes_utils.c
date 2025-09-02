@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_stripes_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meruem <meruem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 16:34:56 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/08/29 12:19:24 by meruem           ###   ########.fr       */
+/*   Updated: 2025/09/02 22:39:17 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ void	put_pixel_image(t_img img, int x, int y, int color)
 {
 	char	*dst;
 
+	// Vérifications de sécurité pour éviter les accès hors limites
+	if (!img.addr || x < 0 || y < 0 || x >= img.width || y >= img.height)
+		return;
+	
 	dst = img.addr + (y * img.line_len + x * (img.bpp / 8));
 	*(unsigned int *)dst = color;
 }
