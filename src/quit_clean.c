@@ -66,15 +66,3 @@ void	ft_clear_all(t_data *data, int error_code)
 	if (data->map)
 		ft_clear_map(data->map, error_code);
 }
-
-int	click_cross(t_data *data)
-{
-	ft_clear_all(data, 0);
-	exit(0);
-	return (0);
-}
-void	close_window(t_data *data)
-{
-	ft_clear_all(data, 0);
-	exit(0);
-}

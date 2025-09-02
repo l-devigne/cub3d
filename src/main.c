@@ -12,97 +12,27 @@
 
 #include "../include/cub3d.h"
 
-void	init_player(char **grid, t_player *player)
+void draw_and_hook(t_data *data)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	while (grid[i])
-	{
-		j = 0;
-		while (grid[i][j])
-		{
-			if (grid[i][j] != '0' && grid[i][j] != '1' && grid[i][j] != ' ')
-			{
-				player->x = ((float)j + ((float)j + 1)) / 2;
-				player->y = ((float)i + ((float)i + 1)) / 2;
-				break ;
-			}
-			++j;
-		}
-		if (grid[i][j] != '\0' && grid[i][j] != '0' && grid[i][j] != '1')
-			break ;
-		++i;
-	}
-	if (grid[i][j] == 'N')
-	{
-		player->dir_x = 0;
-		player->dir_y = -1;
-		player->plane_x = 0.66; // 2D camera plane (FOV control)
-		player->plane_y = 0;
-	}
-	else if (grid[i][j] == 'S')
-	{
-		player->dir_x = 0;
-		player->dir_y = 1;
-		player->plane_x = -0.66;
-		player->plane_y = 0;
-	}
-	else if (grid[i][j] == 'W')
-	{
-		player->dir_x = -1;
-		player->dir_y = 0;
-		player->plane_x = 0;
-		player->plane_y = -0.66;
-	}
-	else
-	{
-		player->dir_x = 1;
-		player->dir_y = 0;
-		player->plane_x = 0;
-		player->plane_y = 0.66;
-	}
+	draw_whole_screen(data);
+	mlx_hook(data->win, 17, 0, &click_cross, data);
+	mlx_hook(data->win, KeyPress, KeyPressMask, detect_key_press, data);
+	mlx_hook(data->win, KeyRelease, KeyReleaseMask, detect_key_release, data);
+	mlx_loop_hook(data->mlx, handle_keys, data);
+	mlx_loop(data->mlx);
 }
 
-void	print_map(t_map map)
+void init_window_image(t_data *data)
 {
-	int	i;
-
-	i = 0;
-	printf("#####MAP######\n\n");
-	while (map.grid[i])
-	{
-		printf("{%d}__%s\n", i, map.grid[i]);
-		++i;
-	}
-	printf("\n#####TEXTURES######\n");
-	printf("\npath to SO texture is : %s\n", map.south_texture);
-	printf("path to NO texture is : %s\n", map.north_texture);
-	printf("path to WE texture is : %s\n", map.west_texture);
-	printf("path to EA texture is : %s\n", map.east_texture);
-	printf("\n#####COLORS######\n");
-	printf("\ncolor of the ceiling is : %d\n", map.ceiling_color);
-	printf("color of the ceiling is : %d\n", map.floor_color);
-}
-
-void	init_keys(t_data *data, t_keys *keys)
-{
-	keys->key_a = 0;
-	keys->key_d = 0;
-	keys->key_w = 0;
-	keys->key_s = 0;
-	keys->key_left = 0;
-	keys->key_right = 0;
-	data->keys = keys;
-}
-
-void	init_data_null(t_data *data)
-{
-	data->mlx = NULL;
-	data->win = NULL;
-	data->map = NULL;
-	data->text = NULL;
+	data->mlx = mlx_init();
+	if (!data->mlx)
+		return (free(data->mlx), exit(1));
+	data->win = mlx_new_window(data->mlx, 1700, 1000, "CUB3D");
+	if (!data->win)
+		return (mlx_destroy_display(data->mlx), free(data->mlx), exit(1));
+	data->img = initialize_image(data->mlx, 1700, 1000);
+	data->screen_height = 1000;
+	data->screen_width = 1700;
 }
 
 int	main(int ac, char **av)
@@ -115,39 +45,18 @@ int	main(int ac, char **av)
 
 	if (ac != 2)
 		return (ft_error_msg("Wrong number of arguments\n", 1), 1);
+	if (!is_file_valid(av[1]))
+		return (ft_error_msg("Error with map file\n", 1), 1);
 	init_data_null(&data);
 	texture.tex_img = NULL;
-	ft_memset(&map, 0, sizeof(map));
-	// very important to set all data to null pointers before loading them
-	// init_test(&test_map);
-	if (!is_file_valid(av[1])) // check the file (extension, fd etc)
-		return (ft_error_msg("Error with map file\n", 1), 1);
-	data.mlx = mlx_init();
-	if (!data.mlx)
-		return (free(data.mlx), 1);
-	data.win = mlx_new_window(data.mlx, 1700, 1000, "CUB3D");
-	if (!data.win)
-		return (mlx_destroy_display(data.mlx), free(data.mlx), 1);
-	data.img = initialize_image(data.mlx, 1500, 800);
+	init_window_image(&data);
 	data.map = &map;
-	fill_map_struct(av[1], &map); // load the map with the file
-	/* map is loaded -> need to check content of it */
+	fill_map_struct(av[1], &map);
 	if (!check_map(&map))
 		return (ft_clear_all(&data, 0), 1);
-	/* END OF PARSING */
-	init_player(map.grid, &player);
-	// print_map(map);
-	data.player = &player;
+	init_player(&data, map.grid, &player);
 	data.text = &texture;
 	init_keys(&data, &keys);
-	data.screen_height = 800;
-	data.screen_width = 1500;
-	draw_whole_screen(&data);
-	mlx_put_image_to_window(data.mlx, data.win, data.img.mlx_img, 50, 50);
-	mlx_hook(data.win, 17, 0, &click_cross, &data);
-	mlx_hook(data.win, KeyPress, KeyPressMask, detect_key_press, &data);
-	mlx_hook(data.win, KeyRelease, KeyReleaseMask, detect_key_release, &data);
-	mlx_loop_hook(data.mlx, handle_keys, &data);
-	mlx_loop(data.mlx);
+	draw_and_hook(&data);
 	return (0);
 }

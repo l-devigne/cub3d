@@ -12,39 +12,40 @@
 
 #include "../include/cub3d.h"
 
-void	choose_wall_textures(int side, t_data *data, t_coord *ray_dir)
+void	choose_wall_textures(t_data *data, t_ray ray)
 {
 	char	*texture;
 
-	if (side == 0 && ray_dir->x > 0)
-		texture = data->map->west_texture; // pure green
-	else if (side == 0 && ray_dir->x < 0)
-		texture = data->map->east_texture; // dark grey
-	else if (side == 1 && ray_dir->y > 0)
-		texture = data->map->north_texture; // cyan
+	if (ray.type_side == 0 && ray.ray_dir->x > 0)
+		texture = data->map->west_texture;
+	else if (ray.type_side == 0 && ray.ray_dir->x < 0)
+		texture = data->map->east_texture;
+	else if (ray.type_side == 1 && ray.ray_dir->y > 0)
+		texture = data->map->north_texture;
 	else
-		texture = data->map->south_texture; // black
+		texture = data->map->south_texture;
 	data->map->wall_path_choice = texture;
 }
 
-void	texture_handling(t_data *data, char *texture_path, int side, t_ray ray,
-		float perpWallDist)
+void	texture_handling(t_data *data, t_ray ray, float perpWallDist)
 {
+	float	wall_x;
+
 	if (data->text->tex_img)
 		mlx_destroy_image(data->mlx, data->text->tex_img);
-	data->text->tex_img = mlx_xpm_file_to_image(data->mlx, texture_path,
-			&data->text->width, &data->text->height);
+	data->text->tex_img = mlx_xpm_file_to_image(data->mlx,
+			data->map->wall_path_choice, &data->text->width,
+			&data->text->height);
 	data->text->tex_addr = mlx_get_data_addr(data->text->tex_img,
 			&data->text->bpp, &data->text->line_len, &data->text->endian);
-	float wallX; // exact hit coordinate on the wall
-	if (side == 0)
-		wallX = ray.ray_origin.y + perpWallDist * ray.ray_dir->y;
+	if (ray.type_side == 0)
+		wall_x = ray.ray_origin.y + perpWallDist * ray.ray_dir->y;
 	else
-		wallX = ray.ray_origin.x + perpWallDist * ray.ray_dir->x;
-	wallX -= floor(wallX); // keep only the fractional part [0,1)
-	data->text->texX = (int)(wallX * (float)data->text->width);
-	if (side == 0 && ray.ray_dir->x > 0)
+		wall_x = ray.ray_origin.x + perpWallDist * ray.ray_dir->x;
+	wall_x -= floor(wall_x);
+	data->text->texX = (int)(wall_x * (float)data->text->width);
+	if (ray.type_side == 0 && ray.ray_dir->x > 0)
 		data->text->texX = data->text->width - data->text->texX - 1;
-	if (side == 1 && ray.ray_dir->y < 0)
+	if (ray.type_side == 1 && ray.ray_dir->y < 0)
 		data->text->texX = data->text->width - data->text->texX - 1;
 }

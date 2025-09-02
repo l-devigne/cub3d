@@ -60,7 +60,8 @@ int	which_side_hit(t_data *data, t_ray *ray)
 			ray->ray_map_origin_y += ray->step_map.y;
 			side = 1;
 		}
-		if (data->map->grid[ray->ray_map_origin_y][ray->ray_map_origin_x] == '1')
+		if (data->map->grid[ray->ray_map_origin_y][ray->ray_map_origin_x]
+			== '1')
 			hit = 1;
 	}
 	return (side);

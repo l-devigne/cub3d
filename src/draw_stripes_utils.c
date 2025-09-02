@@ -19,24 +19,24 @@ int	screen_wall_height(t_data *data, float perpWallDist)
 
 int	draw_start_wall(t_data *data, float perpWallDist)
 {
-	int	drawStart;
+	int	draw_start;
 
-	drawStart = -screen_wall_height(data, perpWallDist) / 2
+	draw_start = -screen_wall_height(data, perpWallDist) / 2
 		+ data->screen_height / 2;
-	if (drawStart < 0)
-		drawStart = 0;
-	return (drawStart);
+	if (draw_start < 0)
+		draw_start = 0;
+	return (draw_start);
 }
 
 int	draw_end_wall(t_data *data, float perpWallDist)
 {
-	int	drawEnd;
+	int	draw_end;
 
-	drawEnd = screen_wall_height(data, perpWallDist) / 2 + data->screen_height
+	draw_end = screen_wall_height(data, perpWallDist) / 2 + data->screen_height
 		/ 2;
-	if (drawEnd < 0)
-		drawEnd = 0;
-	return (drawEnd);
+	if (draw_end < 0)
+		draw_end = 0;
+	return (draw_end);
 }
 
 void	put_pixel_image(t_img img, int x, int y, int color)
