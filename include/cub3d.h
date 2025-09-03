@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/03 12:11:13 by ldevigne          #+#    #+#             */
+/*   Updated: 2025/09/03 12:15:39 by ldevigne         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -46,12 +58,12 @@ typedef struct s_map
 
 typedef struct s_player
 {
-	float x; // player position in map (float, not int)
-	float		y;
-	float dir_x; // direction vector
-	float		dir_y;
-	float plane_x; // 2D camera plane (FOV control)
-	float		plane_y;
+	float	x;
+	float	y;
+	float	dir_x;
+	float	dir_y;
+	float	plane_x;
+	float	plane_y;
 }				t_player;
 
 typedef struct s_coord
@@ -69,13 +81,8 @@ typedef struct s_ray
 	t_coord		dist_next_cel;
 	t_coord		step_map;
 	t_coord		side_dist;
-	int type_side;
+	int			type_side;
 }				t_ray;
-// typedef struct s_ray
-// {
-//     float x;
-//     float y;
-// } t_ray;
 
 typedef struct s_keys
 {
@@ -93,8 +100,8 @@ typedef struct s_texture
 	char		*tex_addr;
 	int			width;
 	int			height;
-	int			texX;
-	int			texY;
+	int			tex_x;
+	int			tex_y;
 	int			line_len;
 	int			bpp;
 	int			endian;
@@ -130,11 +137,9 @@ void			close_window(t_data *data);
 
 // ### INIT ###
 t_img			initialize_image(void *mlx, int width, int height);
-void	init_player(t_data *data, char **grid, t_player *player);
-void	init_keys(t_data *data, t_keys *keys);
-void	init_data_null(t_data *data);
-
-
+void			init_player(t_data *data, char **grid, t_player *player);
+void			init_keys(t_data *data, t_keys *keys);
+void			init_data_null(t_data *data);
 
 // ### CHECKING ###
 bool			check_map(t_map *map);
@@ -219,10 +224,10 @@ int				detect_key_press(int keysym, t_data *data);
 bool			move_to_wall(t_data *data, float new_x, float new_y);
 
 // ### INIT PLAYER DIR ###
-char find_player_in_grid(t_player *player, char **grid);
-void player_look_north(t_player *player);
-void player_look_south(t_player *player);
-void player_look_west(t_player *player);
-void player_look_east(t_player *player);
+char			find_player_in_grid(t_player *player, char **grid);
+void			player_look_north(t_player *player);
+void			player_look_south(t_player *player);
+void			player_look_west(t_player *player);
+void			player_look_east(t_player *player);
 
 #endif
