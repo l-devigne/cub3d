@@ -18,6 +18,7 @@ int	click_cross(t_data *data)
 	exit(0);
 	return (0);
 }
+
 void	close_window(t_data *data)
 {
 	ft_clear_all(data, 0);

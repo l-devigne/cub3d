@@ -27,7 +27,7 @@ void	choose_wall_textures(t_data *data, t_ray ray)
 	data->map->wall_path_choice = texture;
 }
 
-void	texture_handling(t_data *data, t_ray ray, float perpWallDist)
+void	texture_handling(t_data *data, t_ray ray, float real_wall_dist)
 {
 	float	wall_x;
 
@@ -39,13 +39,13 @@ void	texture_handling(t_data *data, t_ray ray, float perpWallDist)
 	data->text->tex_addr = mlx_get_data_addr(data->text->tex_img,
 			&data->text->bpp, &data->text->line_len, &data->text->endian);
 	if (ray.type_side == 0)
-		wall_x = ray.ray_origin.y + perpWallDist * ray.ray_dir->y;
+		wall_x = ray.ray_origin.y + real_wall_dist * ray.ray_dir->y;
 	else
-		wall_x = ray.ray_origin.x + perpWallDist * ray.ray_dir->x;
+		wall_x = ray.ray_origin.x + real_wall_dist * ray.ray_dir->x;
 	wall_x -= floor(wall_x);
-	data->text->texX = (int)(wall_x * (float)data->text->width);
+	data->text->tex_x = (int)(wall_x * (float)data->text->width);
 	if (ray.type_side == 0 && ray.ray_dir->x > 0)
-		data->text->texX = data->text->width - data->text->texX - 1;
+		data->text->tex_x = data->text->width - data->text->tex_x - 1;
 	if (ray.type_side == 1 && ray.ray_dir->y < 0)
-		data->text->texX = data->text->width - data->text->texX - 1;
+		data->text->tex_x = data->text->width - data->text->tex_x - 1;
 }

@@ -184,11 +184,11 @@ bool			only_valid_chars(const char *pathname);
 
 // ### DRAW STRIPES UTILS ###
 void			put_pixel_image(t_img img, int x, int y, int color);
-int				draw_end_wall(t_data *data, float perpWallDist);
-int				draw_start_wall(t_data *data, float perpWallDist);
-int				screen_wall_height(t_data *data, float perpWallDist);
+int				draw_end_wall(t_data *data, float real_wall_dist);
+int				draw_start_wall(t_data *data, float real_wall_dist);
+int				screen_wall_height(t_data *data, float real_wall_dist);
 void			choose_wall_textures(t_data *data, t_ray ray);
-void			texture_handling(t_data *data, t_ray ray, float perpWallDist);
+void			texture_handling(t_data *data, t_ray ray, float real_wall_dist);
 
 // ### DRAW STRIPES ###
 void			draw_stripe(t_data *data, float cam_step, int index);

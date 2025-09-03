@@ -12,7 +12,7 @@
 
 #include "../include/cub3d.h"
 
-char find_player_in_grid(t_player *player, char **grid)
+char	find_player_in_grid(t_player *player, char **grid)
 {
 	int	i;
 	int	j;
@@ -33,37 +33,37 @@ char find_player_in_grid(t_player *player, char **grid)
 		}
 		++i;
 	}
-    return (0);
+	return (0);
 }
 
-void player_look_north(t_player *player)
+void	player_look_north(t_player *player)
 {
-    player->dir_x = 0;
-    player->dir_y = -1;
-    player->plane_x = 0.66;
-    player->plane_y = 0;
+	player->dir_x = 0;
+	player->dir_y = -1;
+	player->plane_x = 0.66;
+	player->plane_y = 0;
 }
 
-void player_look_south(t_player *player)
+void	player_look_south(t_player *player)
 {
-    player->dir_x = 0;
-    player->dir_y = 1;
-    player->plane_x = -0.66;
-    player->plane_y = 0;
+	player->dir_x = 0;
+	player->dir_y = 1;
+	player->plane_x = -0.66;
+	player->plane_y = 0;
 }
 
-void player_look_east(t_player *player)
+void	player_look_east(t_player *player)
 {
-    player->dir_x = 1;
-    player->dir_y = 0;
-    player->plane_x = 0;
-    player->plane_y = 0.66;
+	player->dir_x = 1;
+	player->dir_y = 0;
+	player->plane_x = 0;
+	player->plane_y = 0.66;
 }
 
-void player_look_west(t_player *player)
+void	player_look_west(t_player *player)
 {
-    player->dir_x = -1;
-    player->dir_y = 0;
-    player->plane_x = 0;
-    player->plane_y = -0.66;
+	player->dir_x = -1;
+	player->dir_y = 0;
+	player->plane_x = 0;
+	player->plane_y = -0.66;
 }
