@@ -17,13 +17,13 @@ void	choose_wall_textures(t_data *data, t_ray ray)
 	char	*texture;
 
 	if (ray.type_side == 0 && ray.ray_dir->x > 0)
-		texture = data->map->west_texture;
-	else if (ray.type_side == 0 && ray.ray_dir->x < 0)
 		texture = data->map->east_texture;
+	else if (ray.type_side == 0 && ray.ray_dir->x < 0)
+		texture = data->map->west_texture;
 	else if (ray.type_side == 1 && ray.ray_dir->y > 0)
-		texture = data->map->north_texture;
-	else
 		texture = data->map->south_texture;
+	else
+		texture = data->map->north_texture;
 	data->map->wall_path_choice = texture;
 }
 
