@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:33:27 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/09/02 11:48:43 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/09/03 14:39:46 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void	ft_clear_map(t_map *map, int error_code)
 		char_free_null(&map->east_texture);
 	if (map->map_path)
 		char_free_null(&map->map_path);
-	tab_free_null(&map->grid);
+	if (map->grid)
+		tab_free_null(&map->grid);
 	if (error_code == 1)
 		ft_error_msg("Error!\n", 1);
 }

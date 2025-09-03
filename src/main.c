@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:46:07 by aherlaud          #+#    #+#             */
-/*   Updated: 2025/09/02 22:04:15 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/09/03 15:14:26 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,6 @@ int	main(int ac, char **av)
 	data.text = &texture;
 	init_keys(&data, &keys);
 	draw_and_hook(&data);
+	ft_clear_all(&data, 0);
 	return (0);
 }

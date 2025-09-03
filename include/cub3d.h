@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:11:13 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/09/03 12:15:39 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/09/03 15:35:50 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ bool			map_get_only_valid_chars(t_map *map);
 bool			map_get_valid_player(t_map *map);
 bool			map_get_valid_textures(t_map *map);
 bool			map_is_closed_by_walls(t_map *map);
+void			empty_gnl_buffer(char **line, int fd, int code);
 bool			no_walls_alone(const char *map_path);
 bool			process_line_check(const char *line);
 bool			textures_are_in_valid_format(char *texture);
@@ -165,7 +166,7 @@ int				get_x_len(const char *map_path);
 int				get_y_len(const char *map_path);
 void			skip_lines(int fd, char *line, int nb_to_skip);
 void			fill_single_line(t_map *map, char *line, int y);
-void			fill_grid(t_map *map);
+void			fill_grid(t_data *data, t_map *map);
 int				set_color_limit(int val);
 int				get_color_from_string(char *str);
 void			get_textures(t_data *data, t_map *map);

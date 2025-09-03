@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 22:08:15 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/09/02 22:08:28 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/09/03 14:39:14 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	set_color_limit(int val)
 {
-	if (val < 0)
+	if (val <= 0)
 		val = 0;
-	if (val > 255)
+	if (val >= 255)
 		val = 255;
 	return (val);
 }

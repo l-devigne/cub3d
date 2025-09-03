@@ -6,11 +6,23 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 21:45:07 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/09/02 21:45:19 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/09/03 15:35:15 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
+
+void	empty_gnl_buffer(char **line, int fd, int code)
+{
+	if (code == 1)
+		*line = get_next_line(fd);
+	while (*line)
+	{
+		free(*line);
+		*line = get_next_line(fd);
+	}
+	*line = NULL;
+}
 
 bool	no_walls_alone(const char *map_path)
 {
@@ -31,7 +43,10 @@ bool	no_walls_alone(const char *map_path)
 	while (line)
 	{
 		if (!ft_strcmp(line, "\n"))
-			return (free(line), close(fd), false);
+		{
+			empty_gnl_buffer(&line, fd, 0);
+			return (close(fd), false);
+		}
 		free(line);
 		line = get_next_line(fd);
 	}
