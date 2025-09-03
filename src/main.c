@@ -12,7 +12,7 @@
 
 #include "../include/cub3d.h"
 
-void draw_and_hook(t_data *data)
+void	draw_and_hook(t_data *data)
 {
 	draw_whole_screen(data);
 	mlx_hook(data->win, 17, 0, &click_cross, data);
@@ -22,7 +22,7 @@ void draw_and_hook(t_data *data)
 	mlx_loop(data->mlx);
 }
 
-void init_window_image(t_data *data)
+void	init_window_image(t_data *data)
 {
 	data->mlx = mlx_init();
 	if (!data->mlx)

@@ -18,29 +18,23 @@ void	draw_pixel_texture(t_data *data, int line_height, int index, int i)
 	int		tex_y;
 	char	*pixel;
 	int		color;
+	int		safe_tex_x;
 
-	// Vérifications de sécurité
 	if (!data || !data->text || !data->text->tex_addr || line_height <= 0)
-		return;
-	
+		return ;
 	d = (i * 256 - data->screen_height * 128 + line_height * 128);
 	tex_y = ((d * data->text->height) / line_height) / 256;
-	
-	// Limiter tex_y aux bornes de la texture
 	if (tex_y < 0)
 		tex_y = 0;
 	if (tex_y >= data->text->height)
 		tex_y = data->text->height - 1;
-	
-	// Limiter texX aux bornes de la texture
-	int safe_texX = data->text->texX;
-	if (safe_texX < 0)
-		safe_texX = 0;
-	if (safe_texX >= data->text->width)
-		safe_texX = data->text->width - 1;
-	
-	pixel = data->text->tex_addr + (tex_y * data->text->line_len
-			+ safe_texX * (data->text->bpp / 8));
+	safe_tex_x = data->text->tex_x;
+	if (safe_tex_x < 0)
+		safe_tex_x = 0;
+	if (safe_tex_x >= data->text->width)
+		safe_tex_x = data->text->width - 1;
+	pixel = data->text->tex_addr + (tex_y * data->text->line_len + safe_tex_x
+			* (data->text->bpp / 8));
 	color = *(unsigned int *)pixel;
 	put_pixel_image(data->img, index, i, color);
 }
@@ -48,20 +42,17 @@ void	draw_pixel_texture(t_data *data, int line_height, int index, int i)
 void	draw_stripe(t_data *data, float cam_step, int index)
 {
 	int		i;
-	float	perp_wall_dist;
+	float	real_wall_dist;
 	int		start;
 	int		end;
 	int		line_height;
 
-	perp_wall_dist = ray_dda_algo(data, cam_step);
-	start = draw_start_wall(data, perp_wall_dist);
-	end = draw_end_wall(data, perp_wall_dist);
+	real_wall_dist = ray_dda_algo(data, cam_step);
+	start = draw_start_wall(data, real_wall_dist);
+	end = draw_end_wall(data, real_wall_dist);
 	line_height = end - start;
-	
-	// Vérification de sécurité pour line_height
 	if (line_height <= 0)
 		line_height = 1;
-	
 	i = 0;
 	while (i < data->screen_height)
 	{

@@ -36,4 +36,3 @@ bool	map_get_only_valid_chars(t_map *map)
 	}
 	return (true);
 }
-
