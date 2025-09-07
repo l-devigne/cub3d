@@ -6,7 +6,7 @@
 /*   By: ldevigne <ldevigne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 22:07:27 by ldevigne          #+#    #+#             */
-/*   Updated: 2025/09/02 22:07:38 by ldevigne         ###   ########.fr       */
+/*   Updated: 2025/09/07 16:53:11 by ldevigne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ char	*get_str_without_eol(char *s, t_data *data)
 	if (!s)
 		return (NULL);
 	size_to_dup = 0;
-	while (s[size_to_dup] && s[size_to_dup] != '\n')
+	while (*s == ' ' || (*s >= 9 && *s <= 13))
+		s++;
+	while (s[size_to_dup] && s[size_to_dup] != '\n' && s[size_to_dup] != ' ')
 		size_to_dup++;
 	copy = malloc(sizeof(char) * (size_to_dup + 1));
 	if (!copy)
